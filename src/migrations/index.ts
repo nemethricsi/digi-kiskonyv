@@ -1,9 +1,15 @@
 import * as migration_20261013_141956_initial from './20261013_141956_initial';
+import * as migration_20261013_163629_add_citizens from './20261013_163629_add_citizens';
 
 export const migrations = [
   {
     up: migration_20261013_141956_initial.up,
     down: migration_20261013_141956_initial.down,
-    name: '20261013_141956_initial'
+    name: '20261013_141956_initial',
+  },
+  {
+    up: migration_20261013_163629_add_citizens.up,
+    down: migration_20261013_163629_add_citizens.down,
+    name: '20261013_163629_add_citizens'
   },
 ];
