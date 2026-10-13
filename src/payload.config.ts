@@ -13,9 +13,15 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 // Every preview branch gets its own server url.
+// Vercel system env vars: production domain in prod, the deployment's own URL in preview
+const vercelHost =
+  process.env.VERCEL_ENV === 'production'
+    ? process.env.VERCEL_PROJECT_PRODUCTION_URL
+    : process.env.VERCEL_URL
+
 const serverURL =
   process.env.NEXT_PUBLIC_SERVER_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+  (vercelHost ? `https://${vercelHost}` : 'http://localhost:3000')
 
 export default buildConfig({
   serverURL,
