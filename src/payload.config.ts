@@ -8,6 +8,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { env } from './env'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -15,12 +16,10 @@ const dirname = path.dirname(filename)
 // Every preview branch gets its own server url.
 // Vercel system env vars: production domain in prod, the deployment's own URL in preview
 const vercelHost =
-  process.env.VERCEL_ENV === 'production'
-    ? process.env.VERCEL_PROJECT_PRODUCTION_URL
-    : process.env.VERCEL_URL
+  env.VERCEL_ENV === 'production' ? env.VERCEL_PROJECT_PRODUCTION_URL : env.VERCEL_URL
 
 const serverURL =
-  process.env.NEXT_PUBLIC_SERVER_URL ||
+  env.NEXT_PUBLIC_SERVER_URL ||
   (vercelHost ? `https://${vercelHost}` : 'http://localhost:3000')
 
 export default buildConfig({
@@ -33,23 +32,23 @@ export default buildConfig({
   },
   collections: [Users, Media],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: env.PAYLOAD_SECRET,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || '',
+      connectionString: env.DATABASE_URL,
     },
     idType: 'uuid',
   }),
-  email: process.env.SMTP_HOST
+  email: env.SMTP_HOST
     ? nodemailerAdapter({
         defaultFromAddress: 'noreply@example.com',
         defaultFromName: 'ÁDK (demó)',
         transportOptions: {
-          host: process.env.SMTP_HOST,
-          port: Number(process.env.SMTP_PORT || 1025),
+          host: env.SMTP_HOST,
+          port: env.SMTP_PORT,
           secure: false,
         },
       })

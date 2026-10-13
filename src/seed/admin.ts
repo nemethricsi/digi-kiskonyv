@@ -1,9 +1,9 @@
 import type { Payload } from 'payload'
 
-import { requireEnv } from '@/seed/requireEnv'
+import { seedEnv } from '@/seed/env'
 
 export async function ensureAdmin(payload: Payload) {
-  const [email, password] = requireEnv('SEED_ADMIN_EMAIL', 'SEED_ADMIN_PASSWORD')
+  const { SEED_ADMIN_EMAIL: email, SEED_ADMIN_PASSWORD: password } = seedEnv
 
   const existing = await payload.find({
     collection: 'users',
