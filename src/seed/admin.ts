@@ -1,12 +1,9 @@
 import type { Payload } from 'payload'
 
-export async function ensureAdmin(payload: Payload) {
-  const email = process.env.SEED_ADMIN_EMAIL
-  const password = process.env.SEED_ADMIN_PASSWORD
+import { requireEnv } from '@/seed/requireEnv'
 
-  if (!email || !password) {
-    throw new Error('SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD must be set')
-  }
+export async function ensureAdmin(payload: Payload) {
+  const [email, password] = requireEnv('SEED_ADMIN_EMAIL', 'SEED_ADMIN_PASSWORD')
 
   const existing = await payload.find({
     collection: 'users',
