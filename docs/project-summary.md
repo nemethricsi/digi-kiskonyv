@@ -154,7 +154,7 @@ const run = (cmd) => execSync(cmd, { stdio: "inherit" });
 
 if (process.env.VERCEL_ENV === "preview") {
   run("payload migrate:fresh");
-  run("payload run src/seed.ts");
+  run("payload run src/seed/index.ts");
 } else {
   run("payload migrate");
 }
@@ -169,7 +169,7 @@ run("next build");
 
 ## Következő teendők
 
-**Állapot (2026. október 13.):** a projekt létrejött (blank sablon, Postgres adapter). A Docker Compose projekt neve `digi-kiskonyv` (Postgres 17 + Mailpit), az admin elérhető a `localhost:3000/admin` címen. Folyamatban: átállás UUID azonosítókra (`idType: 'uuid'` a Postgres adapterben, majd `docker compose down -v` és újraindítás). A munka a Claude Code-ban folytatódik.
+**Állapot (2026. október 13.):** az 1. fázis kész. UUID azonosítók, Mailpit bekötve (`@payloadcms/email-nodemailer`, csak ha van `SMTP_HOST`; anélkül konzol), `serverURL` a Vercel rendszerváltozóiból (`VERCEL_PROJECT_PRODUCTION_URL` prodban, `VERCEL_URL` previewban). Seed: `pnpm seed` (`src/seed/`, idempotens admin env-ből). Első migráció (`initial`), `scripts/vercel-build.mjs`, pnpm 11 (`allowBuilds` a `pnpm-workspace.yaml`-ban, `packageManager` mező). Production él Vercelen + Neonon (Neon `preview` branch: schema only, auto-delete nélkül). Folyamatban: a preview build tesztelése (`test/preview` branch). Következő: 2. fázis.
 
 A CV után hat fázis; minden fázis végén legyen működő, kitehető állapot.
 
@@ -182,9 +182,9 @@ A CV után hat fázis; minden fázis végén legyen működő, kitehető állapo
 
 - [x] Docker Compose: Postgres + Mailpit, `docker compose up -d`.
 - [x] Új projekt: `create-payload-app`, blank sablon, Postgres.
-- [ ] UUID-ra váltás befejezése, a generált táblák átnézése (`\dt`, `\d users`).
-- [ ] Neon projekt + Vercel deploy, első migráció, `vercel-build` szkript.
-- [ ] Első admin user szkriptből (env változók), nem a „Create first user” oldalon.
+- [x] UUID-ra váltás befejezése, a generált táblák átnézése (`\dt`, `\d users`).
+- [x] Neon projekt + Vercel deploy, első migráció, `vercel-build` szkript.
+- [x] Első admin user szkriptből (env változók): lokálisan és previewban a seed hozza létre. Prodban demó-kompromisszum: a „Create first user” oldal, közvetlenül az első deploy után.
 
 **2. Adatmodell és admin**
 
@@ -228,8 +228,8 @@ A kódminták a mintát mutatják; a pontos API-t a Payload skillben, illetve a 
 **Dokumentációban ellenőrizendő:**
 
 - [ ] Payload: `payload.login()` és `payload.auth()` szignatúrája; az egyedi auth stratégia formátuma.
-- [ ] Payload: `migrate:fresh` nem interaktív futtatása; létezik-e a `payload run`.
-- [ ] Payload: migráció futtatása Vercelen (build parancs vagy az adapter induláskori opciója); e-mail adapter csomagnevek.
+- [x] Payload: `migrate:fresh` nem interaktív futtatása (`--force-accept-warning`); a `payload run` létezik (3.90.2), de a szkriptnek magának kell `getPayload` + `process.exit`.
+- [x] Payload: migráció futtatása Vercelen: build parancsban (`vercel-build`); e-mail adapterek: `@payloadcms/email-nodemailer`, `@payloadcms/email-resend`.
 - [ ] Neon: ajánlott kapcsolódási mód serverlesshez (pooled connection string); ingyenes csomag branch-limitje.
 - [ ] DÁP Design System: Next.js integráció és FOUC kezelése.
 - [ ] DÁP: van-e már személyes ügyintézésben használható funkció (2025-ben későbbi fejlesztésként szerepelt).
