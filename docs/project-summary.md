@@ -38,19 +38,19 @@ A papír „Álláskeresők kiskönyve” digitális változata, saját tapaszta
 
 Egy Next.js app, benne a Payload 3-mal: egy repo, egy deploy.
 
-| Terület | Választás | Indoklás |
-| --- | --- | --- |
-| Keretrendszer | Next.js + Payload 3 | A Payload a Next.js-en belül fut (admin + API), Astróra külön éles oldal lesz |
-| Adatbázis | Postgres: lokálisan Docker, élesben Neon | A Payload Postgres adaptere Drizzle-t használ |
-| Azonosítók | UUID (`idType: 'uuid'`) | Kitalálhatatlan ID-k, IDOR kockázat ellen |
-| UI | DÁP Design System (`dap-design-system`, Lit web komponensek) | Az IdomSoft saját design systeme |
-| Layout | Tailwind v4, a DÁP design tokenekre kötve (`@theme`) | A saját részek illeszkednek a komponensekhez; Sass nem kell |
-| Ügyintézői UI | Payload admin, egy egyedi QR-beolvasó nézettel | Belső eszközt nem építünk újra (mint a Stripe Customer Portalnál) |
-| Tesztelés | Vitest (logika), Playwright + axe (fő folyamat, akadálymentesség) | A hirdetés név szerint kéri |
-| Lokális infra | Docker Compose: Postgres + Mailpit | Docker-tapasztalat, e-mailek biztonságos tesztelése |
-| E-mail | Lokálisan Mailpit, previewban konzol, élesben Resend | Környezet szerinti adapter a Payload configban |
-| Hosting | Vercel | Preview deployok PR-enként |
-| Kriptográfia | `jose` | QR-token (HS256) és aláírt igazolás (Ed25519) |
+| Terület       | Választás                                                         | Indoklás                                                                      |
+| ------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Keretrendszer | Next.js + Payload 3                                               | A Payload a Next.js-en belül fut (admin + API), Astróra külön éles oldal lesz |
+| Adatbázis     | Postgres: lokálisan Docker, élesben Neon                          | A Payload Postgres adaptere Drizzle-t használ                                 |
+| Azonosítók    | UUID (`idType: 'uuid'`)                                           | Kitalálhatatlan ID-k, IDOR kockázat ellen                                     |
+| UI            | DÁP Design System (`dap-design-system`, Lit web komponensek)      | Az IdomSoft saját design systeme                                              |
+| Layout        | Tailwind v4, a DÁP design tokenekre kötve (`@theme`)              | A saját részek illeszkednek a komponensekhez; Sass nem kell                   |
+| Ügyintézői UI | Payload admin, egy egyedi QR-beolvasó nézettel                    | Belső eszközt nem építünk újra (mint a Stripe Customer Portalnál)             |
+| Tesztelés     | Vitest (logika), Playwright + axe (fő folyamat, akadálymentesség) | A hirdetés név szerint kéri                                                   |
+| Lokális infra | Docker Compose: Postgres + Mailpit                                | Docker-tapasztalat, e-mailek biztonságos tesztelése                           |
+| E-mail        | Lokálisan Mailpit, previewban konzol, élesben Resend              | Környezet szerinti adapter a Payload configban                                |
+| Hosting       | Vercel                                                            | Preview deployok PR-enként                                                    |
+| Kriptográfia  | `jose`                                                            | QR-token (HS256) és aláírt igazolás (Ed25519)                                 |
 
 **Web komponensek, amire figyelni kell:** a Shadow DOM miatt a Tailwind-osztályok nem jutnak be a komponensbe (testreszabás CSS változókkal vagy `::part`-tal); stringet attribútumként, objektumot property-ként adunk át; a React 19 kezeli a custom eventeket; Next.js-ben a komponensek csak kliensen regisztrálódnak (lásd a DÁP dokumentáció Next.js és FOUC oldalát).
 
@@ -58,15 +58,15 @@ Egy Next.js app, benne a Payload 3-mal: egy repo, egy deploy.
 
 Hét collection; a kérelem és az álláskeresési időszak egyetlen modell státuszgéppel, a megjelenések pedig módosíthatatlanok.
 
-| Collection | Mezők | Megjegyzés |
-| --- | --- | --- |
-| `users` | email, jelszó, `role` (clerk / editor) | Ügyintézők és szerkesztők, `auth: true`, `admin.user` |
-| `citizens` | álnevesített azonosító, kitalált név | `auth: true` (lásd Autentikáció) |
-| `registrations` | `citizen`, `status`, `requestedAt`, `documents`, `startDate`, `endDate`, `endReason`, `reviewedBy`, `reviewedAt`, `rejectionReason`, `internalNotes` | A kérelem ÉS az időszak egyben |
-| `appointments` | `registration`, `citizen` (hookból), `scheduledAt`, `type`, `status`, `createdBy` | Kötelező megjelenések |
-| `attendances` | `appointment` (unique), `recordedAt`, `recordedBy`, `method` (qr / manual), `tokenJti` (unique), aláírt igazolás | Csak létrehozási jog: ez a „pecsét” |
-| `documents` | fájl | Upload collection a feltöltött igazolásokhoz |
-| `pages` | tartalom | Tájékoztatók a szerkesztőknek |
+| Collection      | Mezők                                                                                                                                                | Megjegyzés                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `users`         | email, jelszó, `role` (clerk / editor)                                                                                                               | Ügyintézők és szerkesztők, `auth: true`, `admin.user` |
+| `citizens`      | álnevesített azonosító, kitalált név                                                                                                                 | `auth: true` (lásd Autentikáció)                      |
+| `registrations` | `citizen`, `status`, `requestedAt`, `documents`, `startDate`, `endDate`, `endReason`, `reviewedBy`, `reviewedAt`, `rejectionReason`, `internalNotes` | A kérelem ÉS az időszak egyben                        |
+| `appointments`  | `registration`, `citizen` (hookból), `scheduledAt`, `type`, `status`, `createdBy`                                                                    | Kötelező megjelenések                                 |
+| `attendances`   | `appointment` (unique), `recordedAt`, `recordedBy`, `method` (qr / manual), `tokenJti` (unique), aláírt igazolás                                     | Csak létrehozási jog: ez a „pecsét”                   |
+| `documents`     | fájl                                                                                                                                                 | Upload collection a feltöltött igazolásokhoz          |
+| `pages`         | tartalom                                                                                                                                             | Tájékoztatók a szerkesztőknek                         |
 
 **Státuszok:** registrations: requested → approved | rejected, approved → closed. Appointments: scheduled → attended | missed | cancelled.
 
@@ -132,11 +132,11 @@ A demó magja az, hogy a megjelenés az állampolgár oldalán is látható, elh
 
 Három környezet, és prod adat soha nem kerül preview-ba.
 
-| Környezet | Adatbázis | Séma | Adat | E-mail |
-| --- | --- | --- | --- | --- |
-| Lokális | Docker Postgres | push mód (automatikus) | seed | Mailpit |
-| Preview | Közös Neon `preview` branch, prod adat nélkül | `migrate:fresh` minden buildnél | seed | konzol |
-| Prod | Neon main | csak `payload migrate` | valós | Resend |
+| Környezet | Adatbázis                                     | Séma                            | Adat  | E-mail  |
+| --------- | --------------------------------------------- | ------------------------------- | ----- | ------- |
+| Lokális   | Docker Postgres                               | push mód (automatikus)          | seed  | Mailpit |
+| Preview   | Közös Neon `preview` branch, prod adat nélkül | `migrate:fresh` minden buildnél | seed  | konzol  |
+| Prod      | Neon main                                     | csak `payload migrate`          | valós | Resend  |
 
 **Migrációk:**
 
@@ -149,16 +149,16 @@ Három környezet, és prod adat soha nem kerül preview-ba.
 
 ```js
 // scripts/vercel-build.mjs
-import { execSync } from "node:child_process";
-const run = (cmd) => execSync(cmd, { stdio: "inherit" });
+import { execSync } from 'node:child_process';
+const run = (cmd) => execSync(cmd, { stdio: 'inherit' });
 
-if (process.env.VERCEL_ENV === "preview") {
-  run("payload migrate:fresh");
-  run("payload run src/seed/index.ts");
+if (process.env.VERCEL_ENV === 'preview') {
+  run('payload migrate:fresh');
+  run('payload run src/seed/index.ts');
 } else {
-  run("payload migrate");
+  run('payload migrate');
 }
-run("next build");
+run('next build');
 ```
 
 **Seed szabályok:** idempotens (stabil kulcsok alapján, csak ha még nem létezik), csak kitalált adat és `@example.com` cím, ugyanaz a fájl fut lokálisan és previewban. A seed hozza létre az első admin usert is.

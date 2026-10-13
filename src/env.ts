@@ -1,5 +1,5 @@
-import { createEnv } from '@t3-oss/env-nextjs'
-import * as z from 'zod'
+import { createEnv } from '@t3-oss/env-nextjs';
+import * as z from 'zod';
 
 export const env = createEnv({
   server: {
@@ -22,4 +22,4 @@ export const env = createEnv({
   emptyStringAsUndefined: true,
   // Escape hatch for commands that load the config without a full env (e.g. generate:types in CI)
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
-})
+});

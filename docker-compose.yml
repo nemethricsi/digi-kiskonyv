@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: payload
       POSTGRES_DB: digi-kiskonyv
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -17,8 +17,8 @@ services:
     image: axllent/mailpit
     restart: unless-stopped
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - '8025:8025'
+      - '1025:1025'
 
 volumes:
   pgdata:

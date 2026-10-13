@@ -1,0 +1,64 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "oxc",
+    "react",
+    "nextjs",
+    "jsx-a11y",
+    "import"
+  ],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "no-underscore-dangle": [
+      "warn",
+      {
+        "allow": ["_status", "_order", "_parent_id", "__filename", "__dirname"]
+      }
+    ],
+    "import/no-unassigned-import": [
+      "warn",
+      {
+        "allow": [
+          "**/*.css",
+          "**/*.scss",
+          "server-only",
+          "dotenv/config",
+          "**/env"
+        ]
+      }
+    ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["./**", "../**", "!**/*.css", "!**/*.scss"],
+            "message": "Use an absolute '@/...' import instead of a relative import."
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["next.config.ts", "scripts/**", "tests/**"],
+      "rules": { "no-restricted-imports": "off" }
+    }
+  ],
+  "ignorePatterns": [
+    ".next/**",
+    ".claude/skills/**",
+    "src/payload-types.ts",
+    "src/app/(payload)/**",
+    "src/migrations/**"
+  ],
+  "env": {
+    "builtin": true
+  }
+}

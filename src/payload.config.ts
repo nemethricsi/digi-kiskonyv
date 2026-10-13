@@ -1,26 +1,28 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
-import { buildConfig } from 'payload'
-import { fileURLToPath } from 'url'
-import sharp from 'sharp'
+import { postgresAdapter } from '@payloadcms/db-postgres';
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import path from 'path';
+import { buildConfig } from 'payload';
+import sharp from 'sharp';
+import { fileURLToPath } from 'url';
 
-import { Users } from './collections/Users'
-import { Media } from './collections/Media'
-import { env } from './env'
+import { Media } from '@/collections/Media';
+import { Users } from '@/collections/Users';
+import { env } from '@/env';
 
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
 // Every preview branch gets its own server url.
 // Vercel system env vars: production domain in prod, the deployment's own URL in preview
 const vercelHost =
-  env.VERCEL_ENV === 'production' ? env.VERCEL_PROJECT_PRODUCTION_URL : env.VERCEL_URL
+  env.VERCEL_ENV === 'production'
+    ? env.VERCEL_PROJECT_PRODUCTION_URL
+    : env.VERCEL_URL;
 
 const serverURL =
   env.NEXT_PUBLIC_SERVER_URL ||
-  (vercelHost ? `https://${vercelHost}` : 'http://localhost:3000')
+  (vercelHost ? `https://${vercelHost}` : 'http://localhost:3000');
 
 export default buildConfig({
   serverURL,
@@ -55,4 +57,4 @@ export default buildConfig({
     : undefined,
   sharp,
   plugins: [],
-})
+});

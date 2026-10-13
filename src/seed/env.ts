@@ -1,5 +1,5 @@
-import { createEnv } from '@t3-oss/env-nextjs'
-import * as z from 'zod'
+import { createEnv } from '@t3-oss/env-nextjs';
+import * as z from 'zod';
 
 // Separate from src/env.ts: only the seed needs these (locally and on Vercel preview)
 export const seedEnv = createEnv({
@@ -9,4 +9,4 @@ export const seedEnv = createEnv({
   },
   experimental__runtimeEnv: process.env,
   emptyStringAsUndefined: true,
-})
+});
