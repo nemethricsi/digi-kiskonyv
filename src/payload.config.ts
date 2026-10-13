@@ -1,11 +1,14 @@
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { en } from '@payloadcms/translations/languages/en';
+import { hu } from '@payloadcms/translations/languages/hu';
 import path from 'path';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
 import { fileURLToPath } from 'url';
 
+import { Citizen } from '@/collections/Citizen';
 import { Media } from '@/collections/Media';
 import { Users } from '@/collections/Users';
 import { env } from '@/env';
@@ -26,13 +29,17 @@ const serverURL =
 
 export default buildConfig({
   serverURL,
+  i18n: {
+    supportedLanguages: { hu, en },
+    fallbackLanguage: 'hu',
+  },
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Citizen, Media, Users],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,
   typescript: {
