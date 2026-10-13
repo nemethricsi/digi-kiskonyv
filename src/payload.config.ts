@@ -12,8 +12,13 @@ import { Media } from './collections/Media'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// Every preview branch gets its own server url.
+const serverURL =
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  serverURL,
   admin: {
     user: Users.slug,
     importMap: {
@@ -32,15 +37,17 @@ export default buildConfig({
     },
     idType: 'uuid',
   }),
-  email: nodemailerAdapter({
-    defaultFromAddress: 'noreply@example.com',
-    defaultFromName: 'ÁDK (demó)',
-    transportOptions: {
-      host: process.env.SMTP_HOST || 'localhost',
-      port: Number(process.env.SMTP_PORT || 1025),
-      secure: false,
-    },
-  }),
+  email: process.env.SMTP_HOST
+    ? nodemailerAdapter({
+        defaultFromAddress: 'noreply@example.com',
+        defaultFromName: 'ÁDK (demó)',
+        transportOptions: {
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT || 1025),
+          secure: false,
+        },
+      })
+    : undefined,
   sharp,
   plugins: [],
 })
