@@ -18,7 +18,7 @@ export async function ensureAdmin(payload: Payload) {
 
   const user = await payload.create({
     collection: 'users',
-    data: { email, password },
+    data: { email, password, role: 'admin' },
   });
   payload.logger.info(`Admin user created: ${email}`);
   return user;
