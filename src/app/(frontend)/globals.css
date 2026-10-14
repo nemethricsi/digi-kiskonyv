@@ -1,3 +1,41 @@
-:not(:defined) {
-  visibility: hidden;
+/* Unlayered CSS beats every @layer, so the DÁP files are imported into layers too:
+   otherwise the dds-reset `margin: 0; padding: 0` would override Tailwind utilities. */
+@layer theme, base, components, utilities;
+
+@import 'dap-design-system/dist/light.theme.css' layer(theme);
+@import 'tailwindcss/theme.css' layer(theme);
+/* DÁP reset instead of Tailwind Preflight */
+@import 'dap-design-system/dist/dds-reset.css' layer(base);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* Tailwind utilities resolve to DÁP tokens. Breakpoints stay Tailwind defaults:
+   they already match the DÁP ones (640/768/1024/1280/1536 px). */
+@theme inline {
+  /* --dds-spacing-100 is 4px, the same base unit as Tailwind: p-4 = --dds-spacing-400 */
+  --spacing: var(--dds-spacing-100);
+
+  /* Only DÁP semantic colours, no Tailwind palette (no hardcoded colours) */
+  --color-*: initial;
+  --color-text: var(--dds-text-neutral-base);
+  --color-text-strong: var(--dds-text-neutral-strong);
+  --color-text-subtle: var(--dds-text-neutral-subtle);
+  --color-text-brand: var(--dds-text-brand-base);
+  --color-bg: var(--dds-background-neutral-subtle);
+  --color-bg-base: var(--dds-background-neutral-base);
+  --color-bg-brand: var(--dds-background-brand-base);
+  --color-border: var(--dds-border-neutral-subtle);
+  --color-border-divider: var(--dds-border-neutral-divider);
+}
+
+@layer base {
+  /* dds-reset sets `outline: none` on everything; restore a visible focus ring (WCAG 2.4.7) */
+  :focus-visible {
+    outline: var(--dds-border-width-large) solid var(--dds-focus-outer-ring);
+    outline-offset: 2px;
+  }
+
+  /* FOUC: hide custom elements until ClientApplication has registered them */
+  :not(:defined) {
+    visibility: hidden;
+  }
 }

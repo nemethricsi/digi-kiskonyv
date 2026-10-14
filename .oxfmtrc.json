@@ -20,6 +20,11 @@
       "unknown"
     ]
   },
+  "sortTailwindcss": {
+    "stylesheet": "./src/app/(frontend)/globals.css",
+    "functions": ["clsx", "cn"],
+    "preserveWhitespace": false
+  },
   "sortPackageJson": {
     "sortScripts": true
   },
