@@ -2,7 +2,7 @@ import { AppLink } from '@/app/(frontend)/components/AppLink';
 
 export function LaunchSection() {
   return (
-    <section className="flex-1 bg-bg-base py-12 md:py-16">
+    <section id="adk" className="flex-1 bg-bg-base py-12 md:py-16">
       <div className="mx-auto flex max-w-(--dds-containers-xlarge) flex-col items-start gap-4 px-4">
         <dap-ds-typography variant="h2">
           Álláskeresők Digitális Kiskönyve
