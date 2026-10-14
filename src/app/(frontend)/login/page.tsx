@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 
+import { AppLink } from '@/app/(frontend)/components/AppLink';
 import { SiteFooter } from '@/app/(frontend)/components/SiteFooter';
 import appStoreBadge from '@/app/(frontend)/login/app-store.svg';
 import illustration from '@/app/(frontend)/login/hand-2.svg';
@@ -10,18 +11,16 @@ export const metadata: Metadata = {
   title: 'Bejelentkezés (demó) • Digi Kiskönyv',
 };
 
-// Mock of a DÁP-style sign-in screen. Layout follows the real one, but every text says it is a demo:
-// no DÁP/iD logo, no "Ügyfélkapu+" option, no credential fields.
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col bg-bg-base">
       <main className="flex flex-1 items-start justify-center p-4 md:p-10">
         <div className="grid w-full max-w-(--dds-containers-large) gap-6 rounded-(--dds-radius-base) bg-bg p-4 md:grid-cols-2 md:p-5">
           <section className="flex flex-col gap-6 p-4 md:p-12">
-            <dap-ds-link href="/" variant="neutral" bold noUnderline>
+            <AppLink href="/" variant="neutral" bold noUnderline>
               <dap-ds-icon name="arrow-left-line" size="sm"></dap-ds-icon>
               Vissza a kezdőlapra
-            </dap-ds-link>
+            </AppLink>
 
             <div className="flex flex-col items-start gap-2">
               <dap-ds-badge type="warning">DEMÓ</dap-ds-badge>

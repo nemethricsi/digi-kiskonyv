@@ -1,5 +1,6 @@
 import { getImageProps } from 'next/image';
 
+import { AppLink } from '@/app/(frontend)/components/AppLink';
 import illustrationMobile from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_3_f4b789aaf2.svg';
 import illustrationDesktop from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_allo_4_09ed058980.svg';
 import { PrinterLineIcon } from '@/app/(frontend)/components/icons/PrinterLineIcon';
@@ -54,9 +55,9 @@ export function Hero() {
             munkakereséshez vagy karrierváltáshoz.
           </dap-ds-typography>
 
-          <dap-ds-button variant="subtle-inverted" href="/login">
+          <AppLink as="button" variant="subtle-inverted" href="/login">
             Álláskeresési járadék igénylése
-          </dap-ds-button>
+          </AppLink>
         </div>
 
         {/* Decorative. md = 768px, the same breakpoint where the grid becomes two columns.

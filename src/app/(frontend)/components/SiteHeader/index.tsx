@@ -24,8 +24,8 @@ export function SiteHeader() {
         ></dap-ds-icon-button>
       </div>
       <dap-ds-banner variant="negative">
-        <strong>Fontos:</strong> Ez az oldal nem Magyarország hivatalos
-        weboldala, csak egy demo.
+        <strong>Fontos:</strong> Ez nem Magyarország hivatalos weboldala, csak
+        egy demo.
       </dap-ds-banner>
     </header>
   );

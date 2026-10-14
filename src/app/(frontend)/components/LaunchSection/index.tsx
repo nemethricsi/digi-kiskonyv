@@ -1,4 +1,4 @@
-import { LinkButton } from '@/app/(frontend)/components/LinkButton';
+import { AppLink } from '@/app/(frontend)/components/AppLink';
 
 export function LaunchSection() {
   return (
@@ -11,12 +11,14 @@ export function LaunchSection() {
           A papír alapú kiskönyv helyett mostantól online is láthatja az előírt
           megjelenéseit, és a megjelenések igazolása mindig Önnél marad.
         </dap-ds-typography>
-        <LinkButton
+        <AppLink
+          as="button"
           href="/login"
           variant="primary"
-          label="Nyilvántartásba vétel"
           className="mt-2 w-full md:w-auto [&::part(base)]:w-full md:[&::part(base)]:w-auto"
-        />
+        >
+          Nyilvántartásba vétel
+        </AppLink>
       </div>
     </section>
   );
