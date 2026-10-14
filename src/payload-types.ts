@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     citizens: Citizen;
+    registrations: Registration;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     citizens: CitizensSelect<false> | CitizensSelect<true>;
+    registrations: RegistrationsSelect<false> | RegistrationsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -133,6 +135,20 @@ export interface Citizen {
    * 9 számjegy
    */
   taj: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registrations".
+ */
+export interface Registration {
+  id: string;
+  citizen: string | Citizen;
+  status: 'requested' | 'approved' | 'rejected' | 'closed';
+  requestedAt: string;
+  startDate?: string | null;
+  endDate?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -211,6 +227,10 @@ export interface PayloadLockedDocument {
         value: string | Citizen;
       } | null)
     | ({
+        relationTo: 'registrations';
+        value: string | Registration;
+      } | null)
+    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -270,6 +290,19 @@ export interface CitizensSelect<T extends boolean = true> {
   dateOfBirth?: T;
   nameOfMother?: T;
   taj?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registrations_select".
+ */
+export interface RegistrationsSelect<T extends boolean = true> {
+  citizen?: T;
+  status?: T;
+  requestedAt?: T;
+  startDate?: T;
+  endDate?: T;
   updatedAt?: T;
   createdAt?: T;
 }

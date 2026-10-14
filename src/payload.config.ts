@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 
 import { Citizen } from '@/collections/Citizen';
 import { Media } from '@/collections/Media';
+import { Registrations } from '@/collections/Registrations';
 import { Users } from '@/collections/Users';
 import { env } from '@/env';
 
@@ -39,7 +40,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Citizen, Media, Users],
+  collections: [Citizen, Registrations, Media, Users],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,
   typescript: {

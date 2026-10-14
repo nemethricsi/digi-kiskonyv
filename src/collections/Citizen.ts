@@ -9,6 +9,9 @@ export const Citizen: CollectionConfig = {
     plural: 'Állampolgárok',
     singular: 'Állampolgár',
   },
+  admin: {
+    useAsTitle: 'name',
+  },
   access: {
     read: hasAccess('admin', 'clerk'),
     create: hasAccess('admin'),

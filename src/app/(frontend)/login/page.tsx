@@ -23,18 +23,22 @@ export default function LoginPage() {
             </AppLink>
 
             <div className="flex flex-col items-start gap-2">
-              <dap-ds-badge type="warning">DEMÓ</dap-ds-badge>
+              <dap-ds-badge type="warning">DEMO</dap-ds-badge>
               <dap-ds-typography variant="h1">Bejelentkezés</dap-ds-typography>
               <dap-ds-typography variant="body">
                 Szimulált azonosítás: valódi DÁP-belépés nem történik, a gomb
                 egy kitalált demó-állampolgárt léptet be.
               </dap-ds-typography>
             </div>
-
-            {/* Wired to the mock sign-in server action in the next step */}
-            <dap-ds-button className="[&::part(base)]:w-full" size="lg">
+            <AppLink
+              as="button"
+              variant="primary"
+              href="/dap/me"
+              className="[&::part(base)]:w-full"
+              size="lg"
+            >
               DÁP mobilalkalmazás
-            </dap-ds-button>
+            </AppLink>
           </section>
 
           <aside className="flex flex-col gap-4 overflow-hidden rounded-(--dds-radius-large) bg-(--dds-background-brand-base-inverted) p-6 md:p-12">
