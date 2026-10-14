@@ -5,7 +5,7 @@ import illustrationDesktop from '@/app/(frontend)/components/Hero/elvesztettem_a
 import { PrinterLineIcon } from '@/app/(frontend)/components/icons/PrinterLineIcon';
 
 /**
- * Art Direction
+ * Art Direction as from Next.js docs
  * @see https://nextjs.org/docs/pages/api-reference/components/image#art-direction
  */
 const common = {
@@ -22,7 +22,7 @@ const { props: mobile } = getImageProps({ ...common, src: illustrationMobile });
 
 export function Hero() {
   return (
-    <section className="bg-(--dds-background-brand-base-inverted) pt-12 pb-20 [clip-path:ellipse(120%_100%_at_50%_0%)] md:pt-20 md:pb-28">
+    <section className="relative bg-(--dds-background-brand-base-inverted) pt-12 pb-20 md:pt-20 md:pb-28">
       <div className="mx-auto grid max-w-(--dds-containers-xlarge) items-center gap-10 px-4 md:grid-cols-2">
         <div className="flex flex-col items-start gap-6">
           <div className="flex flex-wrap gap-3">
@@ -70,6 +70,12 @@ export function Hero() {
           />
         </picture>
       </div>
+
+      {/* Arch: a page-coloured half-ellipse over the bottom edge (same technique as the DÁP site) */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-[21px] rounded-t-[100%] bg-bg-base"
+      />
     </section>
   );
 }
