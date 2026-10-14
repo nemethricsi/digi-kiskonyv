@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 
+import { SiteFooter } from '@/app/(frontend)/components/SiteFooter';
 import appStoreBadge from '@/app/(frontend)/login/app-store.svg';
 import illustration from '@/app/(frontend)/login/hand-2.svg';
 import playStoreBadge from '@/app/(frontend)/login/play-store.svg';
@@ -74,11 +75,7 @@ export default function LoginPage() {
         </div>
       </main>
 
-      <footer className="bg-bg-base p-4 text-center">
-        <dap-ds-typography variant="caption">
-          Demóprojekt, nem hivatalos kormányzati oldal. Minden adat kitalált.
-        </dap-ds-typography>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

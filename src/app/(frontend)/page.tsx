@@ -3,6 +3,8 @@
 // import { getPayload } from 'payload';
 
 import { Hero } from '@/app/(frontend)/components/Hero';
+import { LaunchSection } from '@/app/(frontend)/components/LaunchSection';
+import { SiteFooter } from '@/app/(frontend)/components/SiteFooter';
 import { SiteHeader } from '@/app/(frontend)/components/SiteHeader';
 // import config from '@/payload.config';
 
@@ -13,10 +15,12 @@ export default async function HomePage() {
   // const { user } = await payload.auth({ headers });
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col bg-bg-base">
       <dap-ds-official-website-banner></dap-ds-official-website-banner>
       <SiteHeader />
       <Hero />
+      <LaunchSection />
+      <SiteFooter />
       {/* <div className="mx-auto max-w-3xl p-4">
         <dap-ds-stack>
           <h1 className="dds-heading dds-typography-h1">Digi Kiskönyv</h1>
@@ -30,11 +34,11 @@ export default async function HomePage() {
               href="/admin"
               className="w-full md:w-auto [&::part(base)]:w-full md:[&::part(base)]:w-auto"
             >
-              Admin
+              Payload Admin
             </dap-ds-button>
           )}
         </dap-ds-stack>
       </div> */}
-    </>
+    </div>
   );
 }
