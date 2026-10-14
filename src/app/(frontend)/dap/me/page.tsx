@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+
 import { getPayload } from 'payload';
 
 import { SiteFooter } from '@/app/(frontend)/components/SiteFooter';
@@ -52,7 +53,10 @@ function RegistrationCard({ registration }: { registration: Registration }) {
   const { status, requestedAt, startDate } = registration;
 
   const details: Detail[] = [
-    { label: 'Kérelem ideje', value: dateTimeFormat.format(new Date(requestedAt)) },
+    {
+      label: 'Kérelem ideje',
+      value: dateTimeFormat.format(new Date(requestedAt)),
+    },
   ];
   if (startDate) {
     details.push({
@@ -132,7 +136,10 @@ export default async function CitizenPage() {
         {activeRegistration ? (
           <RegistrationCard registration={activeRegistration} />
         ) : (
-          <dap-ds-callout variant="info" title="Jelenleg nem regisztrált álláskereső">
+          <dap-ds-callout
+            variant="info"
+            title="Jelenleg nem regisztrált álláskereső"
+          >
             Nincs aktív álláskeresői nyilvántartásba vétele.
             <div slot="actions">
               <RegistrationApplication />

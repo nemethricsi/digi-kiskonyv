@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+
 import { getPayload } from 'payload';
 
 import { getDemoCitizen } from '@/app/(frontend)/dap/me/demo-citizen';
