@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import logo from '@/app/(frontend)/components/SiteHeader/logo-kek.svg';
 
-export default function SiteHeader() {
+export function SiteHeader() {
   return (
     <header className="sticky top-0 z-(--dds-z-index-50) border-b border-border-divider bg-bg">
       <div className="mx-auto flex h-(--header-height) max-w-(--dds-containers-xlarge) items-center justify-between px-4">
@@ -23,7 +23,7 @@ export default function SiteHeader() {
           aria-label="Keresés"
         ></dap-ds-icon-button>
       </div>
-      <dap-ds-banner variant="warning">
+      <dap-ds-banner variant="negative">
         <strong>Fontos:</strong> Ez az oldal nem Magyarország hivatalos
         weboldala, csak egy demo.
       </dap-ds-banner>

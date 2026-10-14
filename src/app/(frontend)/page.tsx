@@ -2,7 +2,8 @@
 
 // import { getPayload } from 'payload';
 
-import SiteHeader from '@/app/(frontend)/components/SiteHeader';
+import { Hero } from '@/app/(frontend)/components/Hero';
+import { SiteHeader } from '@/app/(frontend)/components/SiteHeader';
 // import config from '@/payload.config';
 
 export default async function HomePage() {
@@ -15,8 +16,9 @@ export default async function HomePage() {
     <>
       <dap-ds-official-website-banner></dap-ds-official-website-banner>
       <SiteHeader />
-      <div className="mx-auto max-w-3xl p-4">
-        {/* <dap-ds-stack>
+      <Hero />
+      {/* <div className="mx-auto max-w-3xl p-4">
+        <dap-ds-stack>
           <h1 className="dds-heading dds-typography-h1">Digi Kiskönyv</h1>
           <dap-ds-input label="Név" placeholder="Gipsz Jakab"></dap-ds-input>
           <dap-ds-button className="w-full md:w-auto [&::part(base)]:w-full md:[&::part(base)]:w-auto">
@@ -31,8 +33,8 @@ export default async function HomePage() {
               Admin
             </dap-ds-button>
           )}
-        </dap-ds-stack> */}
-      </div>
+        </dap-ds-stack>
+      </div> */}
     </>
   );
 }

@@ -27,6 +27,16 @@
   --color-border-divider: var(--dds-border-neutral-divider);
 }
 
+/* dap-ds-button with an icon next to the label: the slot wrapper (part="content") is not flex
+   by default, so the icon sits on the text baseline without a gap. */
+@utility button-with-icon {
+  &::part(content) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--dds-spacing-100); /* 4px */
+  }
+}
+
 @layer base {
   :root {
     --header-height: var(--dds-spacing-1800);
