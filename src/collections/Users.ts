@@ -1,13 +1,8 @@
+import { hasAccess, isAdminOrSelf } from '@/access';
+import { ROLE_LABELS, ROLES } from '@/lib/roles';
+
+import type { Role } from '@/lib/roles';
 import type { CollectionConfig } from 'payload';
-
-const ROLES = ['admin', 'clerk', 'editor'] as const;
-type Role = (typeof ROLES)[number];
-
-const ROLE_LABELS: Record<Role, string> = {
-  admin: 'Admin',
-  clerk: 'Ügyintéző',
-  editor: 'Szerkesztő',
-};
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -15,6 +10,12 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   auth: true,
+  access: {
+    create: hasAccess('admin'),
+    update: isAdminOrSelf,
+    delete: hasAccess('admin'),
+    read: hasAccess(...ROLES),
+  },
   fields: [
     {
       name: 'role',
@@ -23,6 +24,9 @@ export const Users: CollectionConfig = {
       defaultValue: 'clerk' satisfies Role,
       required: true,
       saveToJWT: true,
+      access: {
+        update: hasAccess('admin'),
+      },
     },
   ],
 };
