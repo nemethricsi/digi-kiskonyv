@@ -29,7 +29,8 @@
           "**/*.scss",
           "server-only",
           "dotenv/config",
-          "**/env"
+          "**/env",
+          "react"
         ]
       }
     ],

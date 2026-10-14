@@ -2,9 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
 
-import 'dap-design-system/dist/dds-reset.css';
-import 'dap-design-system/dist/light.theme.css';
-
+// DÁP theme and reset are imported inside globals.css, into cascade layers
 import '@/app/(frontend)/globals.css';
 import ClientApplication from '@/app/(frontend)/components/ClientApplication';
 
