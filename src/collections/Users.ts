@@ -1,8 +1,7 @@
-import { isAdmin, isAdminFieldLevel } from '@/access/isAdmin';
-import { isAdminOrSelf } from '@/access/isAdminOrSelf';
-import { isLoggedIn } from '@/access/isLoggedIn';
-import { Role, ROLE_LABELS, ROLES } from '@/lib/roles';
+import { hasAccess, isAdminOrSelf } from '@/access';
+import { ROLE_LABELS, ROLES } from '@/lib/roles';
 
+import type { Role } from '@/lib/roles';
 import type { CollectionConfig } from 'payload';
 
 export const Users: CollectionConfig = {
@@ -12,10 +11,10 @@ export const Users: CollectionConfig = {
   },
   auth: true,
   access: {
-    create: isAdmin,
+    create: hasAccess('admin'),
     update: isAdminOrSelf,
-    delete: isAdmin,
-    read: isLoggedIn,
+    delete: hasAccess('admin'),
+    read: hasAccess(...ROLES),
   },
   fields: [
     {
@@ -26,7 +25,7 @@ export const Users: CollectionConfig = {
       required: true,
       saveToJWT: true,
       access: {
-        update: isAdminFieldLevel,
+        update: hasAccess('admin'),
       },
     },
   ],

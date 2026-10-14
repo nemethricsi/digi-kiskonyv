@@ -1,3 +1,4 @@
+import { hasAccess } from '@/access';
 import { isValidTaj, normalizeTaj } from '@/lib/taj';
 
 import type { CollectionConfig } from 'payload';
@@ -7,6 +8,12 @@ export const Citizen: CollectionConfig = {
   labels: {
     plural: 'Állampolgárok',
     singular: 'Állampolgár',
+  },
+  access: {
+    read: hasAccess('admin', 'clerk'),
+    create: hasAccess('admin'),
+    update: hasAccess('admin'),
+    delete: hasAccess('admin'),
   },
   fields: [
     {
