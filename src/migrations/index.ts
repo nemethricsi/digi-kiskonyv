@@ -2,6 +2,7 @@ import * as migration_20261013_141956_initial from './20261013_141956_initial';
 import * as migration_20261013_163629_add_citizens from './20261013_163629_add_citizens';
 import * as migration_20261013_191115_add_user_role from './20261013_191115_add_user_role';
 import * as migration_20261014_205215_add_registrations from './20261014_205215_add_registrations';
+import * as migration_20261014_210513_seed_demo_citizen from './20261014_210513_seed_demo_citizen';
 
 export const migrations = [
   {
@@ -22,6 +23,11 @@ export const migrations = [
   {
     up: migration_20261014_205215_add_registrations.up,
     down: migration_20261014_205215_add_registrations.down,
-    name: '20261014_205215_add_registrations'
+    name: '20261014_205215_add_registrations',
+  },
+  {
+    up: migration_20261014_210513_seed_demo_citizen.up,
+    down: migration_20261014_210513_seed_demo_citizen.down,
+    name: '20261014_210513_seed_demo_citizen'
   },
 ];
