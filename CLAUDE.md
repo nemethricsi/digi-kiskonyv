@@ -28,7 +28,7 @@ Magyarázd el a döntéseket, ne csak írd meg a kódot. Magyarul kommunikálj, 
 - Az `attendances` collection csak létrehozható; update és delete senkinek nincs.
 - Lokálisan push mód; sémaváltozás után `payload migrate:create`, a generált migrációt át kell nézni (átnevezés = törlés + létrehozás lehet).
 - `migrate:fresh` és seed csak `VERCEL_ENV === "preview"` esetén futhat. Prod adat soha nem kerül preview-ba.
-- Csak kitalált adatok, csak `@example.com` címek. Állami logó nem használható, a DÁP-belépés egyértelműen demóként jelölve.
+- Csak kitalált adatok, csak `@example.com` címek. A DÁP-belépés egyértelműen demóként jelölve.
 - A Payload 3 API gyorsan változik: a `login`, `auth`, az egyedi auth strategy és a migrációs parancsok pontos formáját a Payload skillben, illetve a telepített verzió dokumentációjában ellenőrizd, mielőtt használod.
 
 ## Parancsok

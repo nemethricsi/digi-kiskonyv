@@ -28,13 +28,20 @@
 }
 
 @layer base {
+  :root {
+    --header-height: var(--dds-spacing-1800);
+  }
+
+  html {
+    scroll-padding-top: var(--header-height);
+  }
+
   /* dds-reset sets `outline: none` on everything; restore a visible focus ring (WCAG 2.4.7) */
   :focus-visible {
     outline: var(--dds-border-width-large) solid var(--dds-focus-outer-ring);
     outline-offset: 2px;
   }
 
-  /* FOUC: hide custom elements until ClientApplication has registered them */
   :not(:defined) {
     visibility: hidden;
   }

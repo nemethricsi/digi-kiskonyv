@@ -33,7 +33,7 @@ declare module 'react' {
       'dap-ds-content-switcher-item': import('dap-design-system/react-types').DapDSContentSwitcherItemType;
       'dap-ds-content-switcher': import('dap-design-system/react-types').DapDSContentSwitcherType;
       'dap-ds-copybox-input': import('dap-design-system/react-types').DapDSCopyBoxInputType;
-      'dap-ds-dap-badge': import('dap-design-system/react-types').DapDSBadgeType;
+      'dap-ds-dap-badge': import('dap-design-system/react-types').DapDSDAPBadgeType;
       'dap-ds-datatable': import('dap-design-system/react-types').DapDSDataTableType;
       'dap-ds-datepicker': import('dap-design-system/react-types').DapDSDatePickerType;
       'dap-ds-divider': import('dap-design-system/react-types').DapDSDividerType;
