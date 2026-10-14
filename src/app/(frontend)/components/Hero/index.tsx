@@ -1,7 +1,24 @@
-import Image from 'next/image';
+import { getImageProps } from 'next/image';
 
-import illustration from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_allo_4_09ed058980.svg';
+import illustrationMobile from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_3_f4b789aaf2.svg';
+import illustrationDesktop from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_allo_4_09ed058980.svg';
 import { PrinterLineIcon } from '@/app/(frontend)/components/icons/PrinterLineIcon';
+
+/**
+ * Art Direction
+ * @see https://nextjs.org/docs/pages/api-reference/components/image#art-direction
+ */
+const common = {
+  alt: '',
+  unoptimized: true,
+  loading: 'eager',
+  fetchPriority: 'high',
+} as const;
+const { props: desktop } = getImageProps({
+  ...common,
+  src: illustrationDesktop,
+});
+const { props: mobile } = getImageProps({ ...common, src: illustrationMobile });
 
 export function Hero() {
   return (
@@ -42,14 +59,16 @@ export function Hero() {
           </dap-ds-button>
         </div>
 
-        {/* Decorative */}
-        <Image
-          src={illustration}
-          alt=""
-          className="mx-auto h-auto w-full max-w-xs md:max-w-md"
-          priority
-          unoptimized
-        />
+        {/* Decorative. md = 768px, the same breakpoint where the grid becomes two columns.
+            The aspect ratio follows the selected image, so no layout shift when switching. */}
+        <picture>
+          <source media="(min-width: 768px)" srcSet={desktop.src} />
+          <img
+            {...mobile}
+            alt=""
+            className="mx-auto aspect-4502/1842 h-auto w-full md:aspect-square md:max-w-md"
+          />
+        </picture>
       </div>
     </section>
   );
