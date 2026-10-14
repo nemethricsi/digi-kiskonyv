@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-bg-base">
-      <main className="flex flex-1 items-start justify-center p-4 md:p-10">
-        <div className="grid w-full max-w-(--dds-containers-large) gap-6 rounded-(--dds-radius-base) bg-bg p-4 md:grid-cols-2 md:p-5">
-          <section className="flex flex-col gap-6 p-4 md:p-12">
+    <div className="flex min-h-screen flex-col bg-bg md:bg-bg-base">
+      <main className="flex flex-1 items-start justify-center md:p-10">
+        <div className="grid w-full max-w-(--dds-containers-large) gap-8 bg-bg p-6 md:grid-cols-2 md:gap-6 md:rounded-(--dds-radius-base) md:p-5">
+          <section className="flex flex-col gap-6 md:p-12">
             <AppLink href="/" variant="neutral" bold noUnderline>
               <dap-ds-icon name="arrow-left-line" size="sm"></dap-ds-icon>
               Vissza a kezdőlapra
@@ -37,7 +37,7 @@ export default function LoginPage() {
             </dap-ds-button>
           </section>
 
-          <aside className="flex flex-col gap-4 overflow-hidden rounded-(--dds-radius-large) bg-(--dds-background-brand-base-inverted) p-8 md:p-12">
+          <aside className="flex flex-col gap-4 overflow-hidden rounded-(--dds-radius-large) bg-(--dds-background-brand-base-inverted) p-6 md:p-12">
             <dap-ds-typography variant="h3" inverted>
               Hogyan működne élesben?
             </dap-ds-typography>
@@ -47,27 +47,25 @@ export default function LoginPage() {
               Ebben a demóban ez a lépés le van egyszerűsítve.
             </dap-ds-typography>
 
-            {/* Not links: no real store URL in a demo */}
-            <div className="flex flex-wrap gap-4">
+            <div className="grid grid-cols-2 gap-4 md:flex">
               <Image
                 src={appStoreBadge}
                 alt="Letölthető az App Store-ból"
-                className="h-10 w-auto"
+                className="h-auto w-full md:h-10 md:w-auto"
                 unoptimized
               />
               <Image
                 src={playStoreBadge}
                 alt="Szerezd meg: Google Play"
-                className="h-10 w-auto"
+                className="h-auto w-full md:h-10 md:w-auto"
                 unoptimized
               />
             </div>
 
-            {/* Decorative, bleeds to the panel's bottom edge */}
             <Image
               src={illustration}
               alt=""
-              className="mt-auto -mb-8 h-auto w-full md:-mb-12"
+              className="mt-auto -mb-6 h-auto w-full md:-mb-12"
               unoptimized
             />
           </aside>
