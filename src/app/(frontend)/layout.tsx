@@ -1,19 +1,41 @@
-import React from 'react';
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import type { ReactNode } from 'react';
 
-import './styles.css';
+import 'dap-design-system/dist/dds-reset.css';
+import 'dap-design-system/dist/light.theme.css';
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+import '@/app/(frontend)/globals.css';
+import ClientApplication from '@/app/(frontend)/components/ClientApplication';
+
+const inter = localFont({
+  src: './fonts/InterVariable.woff2',
+  display: 'swap',
+  weight: '500 700',
+  style: 'normal',
+  declarations: [
+    { prop: 'font-feature-settings', value: "'liga' 1,'calt' 1,'ss02' 1" },
+    { prop: 'font-variation-settings', value: "'slnt' 0" },
+    { prop: 'font-optical-sizing', value: 'auto' },
+  ],
+});
+
+export const metadata: Metadata = {
+  description: 'Álláskeresők Digitális Kiskönyve (Demo)',
+  title: 'Digi Kiskönyv',
 };
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props;
-
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) {
   return (
-    <html lang="en">
-      <body>
-        <main>{children}</main>
+    <html lang="hu">
+      <body className={inter.className}>
+        <ClientApplication>
+          <main>{children}</main>
+        </ClientApplication>
       </body>
     </html>
   );

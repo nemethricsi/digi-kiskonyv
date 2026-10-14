@@ -1,0 +1,480 @@
+# DÁP Design System Development Documentation for LLMs
+
+**Access this file via URL:** https://services.gov.hu/design-system-dev/llms.txt
+
+This file provides comprehensive information about the DÁP Design System web component library for use by Large Language Models (LLMs) when working with this system.
+
+## LLM Usage Rules (Read First)
+
+- Prefer web components with the `dap-ds-` prefix; avoid reimplementing components with custom HTML unless the CSS-only path is explicitly requested.
+- Always include a theme stylesheet when rendering UI examples (via NPM import or CDN). Without it, components may render unstyled.
+- In HTML, use kebab-case attributes (e.g., `variant="outline"`, `size="lg"`). In React wrappers (if used), use camelCase props; for raw web components in React, set attributes as strings and attach events via `addEventListener`.
+- Do not hardcode colors, spacing, or typography. Use design tokens (`--dds-*`) or component attributes/variants.
+- Prefer slots and documented CSS parts over DOM traversal for styling internals.
+- Assume client-side rendering for web components. For SSR frameworks, dynamically load client-only pieces.
+- When uncertain, link to the relevant component page in suggestions and use conservative defaults (primary, md, neutral sizing/spacing).
+
+## Documentation Links
+
+- Main Documentation: https://services.gov.hu/design-system-dev/
+- Component Library: https://services.gov.hu/design-system-dev/webcomponents
+- Design Tokens and CSS variables: https://services.gov.hu/design-system-dev/designtokens
+- Framework Integration: https://services.gov.hu/design-system-dev/frameworks
+- Styling Guide: https://services.gov.hu/design-system-dev/styling
+- Typography Guide: https://services.gov.hu/design-system-dev/typography
+- Form Controls: https://services.gov.hu/design-system-dev/form
+- Themes: https://services.gov.hu/design-system-dev/themes
+- Code Completion: https://services.gov.hu/design-system-dev/codecompletion
+- Changelog: https://services.gov.hu/design-system-dev/changelog
+- NPM Package: https://www.npmjs.com/package/dap-design-system
+- CDN: https://cdn.jsdelivr.net/npm/dap-design-system
+- GitHub Examples: https://github.com/mohojojo/dap-ds-examples
+
+## System Overview
+
+The DÁP Design System is a comprehensive web component library for building Hungarian Government digital services. It uses:
+- Web Components built with LitJS
+- Framework-agnostic implementation
+- Custom CSS variables (design tokens) 
+- TypeScript support
+- Available via NPM and CDN
+
+## Installation & Setup
+
+### NPM Installation
+```bash
+npm install dap-design-system
+yarn add dap-design-system  
+pnpm add dap-design-system
+```
+
+### CDN Usage
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/dap-design-system"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dap-design-system/dist/light.theme.css" />
+```
+
+Minimal HTML usage example (safe default):
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dap-design-system/dist/light.theme.css" />
+<script type="module" src="https://cdn.jsdelivr.net/npm/dap-design-system"></script>
+
+<dap-ds-stack gap="md">
+  <dap-ds-button variant="primary" size="md">Continue</dap-ds-button>
+  <dap-ds-input placeholder="Your name"></dap-ds-input>
+  <dap-ds-checkbox checked>Accept terms</dap-ds-checkbox>
+  <dap-ds-snackbar id="snack"></dap-ds-snackbar>
+</dap-ds-stack>
+<script>
+  const snack = document.getElementById('snack');
+  // Example of showing a snackbar via attribute/state
+  // Consult component docs for specific APIs
+  setTimeout(() => snack?.setAttribute('open', ''), 500);
+<\/script>
+```
+
+### Framework Imports
+```jsx
+// Web Components
+import { DapDSButton } from 'dap-design-system'
+
+// React Components
+import { DapDSButtonReact } from 'dap-design-system/react'
+```
+
+## Core Architecture
+
+### Component Naming Convention
+- All components use `dap-ds-` prefix
+- Pascal case for React imports: `DapDSButton`
+- Kebab case for HTML usage: `<dap-ds-button>`
+
+### Design Tokens
+- All CSS variables prefixed with `--dds-`
+- Defined in `:root` for global scope
+- Organized by categories: colors, spacing, typography, animation
+- Support for theming and customization
+
+### Component Structure
+Each component follows consistent patterns:
+- Attributes for configuration
+- Slots for content
+- CSS Parts for styling
+- CSS Custom Properties for theming
+- TypeScript definitions
+- Framework wrappers
+
+### Attribute and Event Conventions
+- Attributes are kebab-case in HTML (e.g., `aria-label`, `variant`, `size`, `loading`).
+- Boolean attributes are present/absent (e.g., `disabled`, `loading`). In JS/TS, set via `el.toggleAttribute('disabled', true)` or `el.disabled = true` if supported.
+- Custom events follow standard `CustomEvent` with `event.detail` payloads. Listen using `addEventListener` on the element.
+
+Plain JS example:
+```html
+<dap-ds-input id="username" placeholder="Username"></dap-ds-input>
+<script type="module">
+  const el = document.getElementById('username');
+  el.addEventListener('change', (e) => {
+    console.log('value', e.target?.value);
+  });
+<\/script>
+```
+
+## Styling System
+
+### CSS Parts
+Use `::part()` pseudo-element to style component internals:
+```css
+dap-ds-button::part(base) {
+  background-color: var(--dds-azure-700);
+  color: var(--dds-text-neutral-strong);
+}
+```
+
+### CSS Custom Properties
+Override component-specific variables:
+```css
+dap-ds-button {
+  --dds-button-padding-x: var(--dds-spacing-800);
+  --dds-button-border-radius: var(--dds-radius-large);
+}
+```
+
+Do not override internal element styles directly; prefer:
+- Public CSS parts with `::part(...)`
+- Public custom properties documented per component
+- Global tokens (`--dds-*`) for theme-level changes
+
+### Pure CSS Classes
+For non-web component environments:
+```html
+<!-- Import theme and native CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dap-design-system/dist/light.theme.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dap-design-system/dist/components.native.css" />
+
+<!-- Use CSS classes -->
+<button class="dds-button dds-button--primary dds-button--md">Login</button>
+```
+
+## Component Categories
+
+### Form Components
+- `dap-ds-button` - Buttons with variants, sizes, states (https://services.gov.hu/design-system-dev/webcomponents/button)
+- `dap-ds-icon-button` - Icon-only buttons for actions (https://services.gov.hu/design-system-dev/webcomponents/icon-button)
+- `dap-ds-input` - Text input fields (https://services.gov.hu/design-system-dev/webcomponents/input)
+- `dap-ds-password-input` - Password input with visibility toggle (https://services.gov.hu/design-system-dev/webcomponents/password-input)
+- `dap-ds-number-input` - Numeric input with controls (https://services.gov.hu/design-system-dev/webcomponents/number-input)
+- `dap-ds-textarea` - Multi-line text input (https://services.gov.hu/design-system-dev/webcomponents/textarea)
+- `dap-ds-checkbox` - Checkbox inputs (https://services.gov.hu/design-system-dev/webcomponents/checkbox)
+- `dap-ds-radio-button` - Radio button inputs (https://services.gov.hu/design-system-dev/webcomponents/radio-button)
+- `dap-ds-switch` - Toggle switches (https://services.gov.hu/design-system-dev/webcomponents/switch)
+- `dap-ds-select` - Dropdown selectors (https://services.gov.hu/design-system-dev/webcomponents/select)
+- `dap-ds-combobox` - Searchable select (https://services.gov.hu/design-system-dev/webcomponents/combobox)
+- `dap-ds-datepicker` - Date selection (https://services.gov.hu/design-system-dev/webcomponents/datepicker)
+- `dap-ds-timepicker` - Time selection (https://services.gov.hu/design-system-dev/webcomponents/timepicker)
+- `dap-ds-file-input` - File upload (https://services.gov.hu/design-system-dev/webcomponents/file-input)
+- `dap-ds-search` - Search input (https://services.gov.hu/design-system-dev/webcomponents/search)
+- `dap-ds-label` - Form labels with descriptions (https://services.gov.hu/design-system-dev/webcomponents/label)
+
+### Navigation Components
+- `dap-ds-breadcrumb` - Breadcrumb navigation (https://services.gov.hu/design-system-dev/webcomponents/breadcrumb)
+- `dap-ds-sidenav` - Side navigation menu (https://services.gov.hu/design-system-dev/webcomponents/side-navigation)
+- `dap-ds-navigation-menu` - Application navigation menu (https://services.gov.hu/design-system-dev/webcomponents/navigation-menu)
+- `dap-ds-tab` - Tab navigation (https://services.gov.hu/design-system-dev/webcomponents/tab)
+- `dap-ds-link` - Links with styling (https://services.gov.hu/design-system-dev/webcomponents/link)
+- `dap-ds-skip-link` - Accessibility skip links (https://services.gov.hu/design-system-dev/webcomponents/skip-link)
+
+### Layout Components
+- `dap-ds-stack` - Flexbox layout container (https://services.gov.hu/design-system-dev/webcomponents/stack)
+- `dap-ds-card` - Content cards (https://services.gov.hu/design-system-dev/webcomponents/card)
+- `dap-ds-divider` - Content separators (https://services.gov.hu/design-system-dev/webcomponents/divider)
+- `dap-ds-scroll-area` - Scrollable containers (https://services.gov.hu/design-system-dev/webcomponents/scroll-area)
+- `dap-ds-scroll-progress` - Scroll progress indicator (https://services.gov.hu/design-system-dev/webcomponents/scroll-progress)
+- `dap-ds-accordion` - Collapsible content sections (https://services.gov.hu/design-system-dev/webcomponents/accordion)
+
+### Feedback Components
+- `dap-ds-banner` - System announcements (https://services.gov.hu/design-system-dev/webcomponents/banner)
+- `dap-ds-callout` - Important information blocks (https://services.gov.hu/design-system-dev/webcomponents/callout)
+- `dap-ds-modal` - Modal dialogs (https://services.gov.hu/design-system-dev/webcomponents/modal)
+- `dap-ds-popup` - Popup content (https://services.gov.hu/design-system-dev/webcomponents/popup)
+- `dap-ds-tooltip` - Hover tooltips (https://services.gov.hu/design-system-dev/webcomponents/tooltip)
+- `dap-ds-tray` - Sliding panels (https://services.gov.hu/design-system-dev/webcomponents/tray)
+- `dap-ds-feedback` - Form field feedback (https://services.gov.hu/design-system-dev/webcomponents/feedback)
+- `dap-ds-spinner` - Loading indicators (https://services.gov.hu/design-system-dev/webcomponents/spinner)
+- `dap-ds-skeleton` - Loading placeholders (https://services.gov.hu/design-system-dev/webcomponents/skeleton)
+- `dap-ds-progress` - Progress bars (https://services.gov.hu/design-system-dev/webcomponents/progress)
+- `dap-ds-snackbar` - Toast notifications (https://services.gov.hu/design-system-dev/webcomponents/snackbar)
+
+### Display Components
+- `dap-ds-badge` - Status indicators (https://services.gov.hu/design-system-dev/webcomponents/badge)
+- `dap-ds-chip` - Tags, categories, removable/selectable chips (https://services.gov.hu/design-system-dev/webcomponents/chip)
+- `dap-ds-avatar` - User avatars (https://services.gov.hu/design-system-dev/webcomponents/avatar)
+- `dap-ds-icon` - Icon display (https://services.gov.hu/design-system-dev/webcomponents/icon)
+- `dap-ds-table` - Data tables (https://services.gov.hu/design-system-dev/webcomponents/table)
+- `dap-ds-calendar` - Calendar views (https://services.gov.hu/design-system-dev/webcomponents/calendar)
+- `dap-ds-timeline` - Process timelines (https://services.gov.hu/design-system-dev/webcomponents/timeline)
+- `dap-ds-typography` - Text styling (https://services.gov.hu/design-system-dev/webcomponents/typography)
+- `dap-ds-list-item` - List items (https://services.gov.hu/design-system-dev/webcomponents/list-item)
+
+### Specialized Components
+- `dap-ds-dap-badge` - Official DÁP branding badge (https://services.gov.hu/design-system-dev/webcomponents/dap-badge)
+- `dap-ds-official-website-banner` - Government site banner (https://services.gov.hu/design-system-dev/webcomponents/official-website-banner)
+- `dap-ds-notification-badge` - Notification counters (https://services.gov.hu/design-system-dev/webcomponents/notification-badge)
+- `dap-ds-content-switcher` - Content view switcher (https://services.gov.hu/design-system-dev/webcomponents/content-switcher)
+- `dap-ds-toggle-button` - Toggle button controls (https://services.gov.hu/design-system-dev/webcomponents/toggle-button)
+- `dap-ds-toc` - Table of contents (https://services.gov.hu/design-system-dev/webcomponents/toc)
+- `dap-ds-data-table` - Advanced data tables (https://services.gov.hu/design-system-dev/webcomponents/data-table)
+- `dap-ds-copybox-input` - Copy-to-clipboard input (https://services.gov.hu/design-system-dev/webcomponents/copybox-input)
+- `dap-ds-code-puncher` - Code/OTP input (https://services.gov.hu/design-system-dev/webcomponents/code-puncher)
+- `dap-ds-command` - Command palette (https://services.gov.hu/design-system-dev/webcomponents/command)
+- `dap-ds-overlay` - Content overlays (https://services.gov.hu/design-system-dev/webcomponents/overlay)
+
+## Common Component Patterns
+
+### Button Component Example
+```html
+<!-- Basic usage -->
+<dap-ds-button>Default Button</dap-ds-button>
+
+<!-- With variants -->
+<dap-ds-button variant="outline">Outline Button</dap-ds-button>
+<dap-ds-button variant="subtle">Subtle Button</dap-ds-button>
+
+<!-- With sizes -->
+<dap-ds-button size="sm">Small</dap-ds-button>
+<dap-ds-button size="lg">Large</dap-ds-button>
+
+<!-- With states -->
+<dap-ds-button loading>Loading...</dap-ds-button>
+<dap-ds-button disabled>Disabled</dap-ds-button>
+<dap-ds-button danger>Danger</dap-ds-button>
+
+<!-- As link -->
+<dap-ds-button href="https://example.com" target="_blank">Link Button</dap-ds-button>
+
+<!-- With icons -->
+<dap-ds-button>
+  <dap-ds-stack direction="row">
+    <dap-ds-icon name="close-line"></dap-ds-icon>
+    <span>Close</span>
+  </dap-ds-stack>
+</dap-ds-button>
+```
+
+### Form Component Patterns
+```html
+<!-- Input with label -->
+<dap-ds-label>
+  Username
+  <dap-ds-input placeholder="Enter username" required></dap-ds-input>
+</dap-ds-label>
+
+<!-- Checkbox group -->
+<fieldset>
+  <legend>Preferences</legend>
+  <dap-ds-checkbox checked>Email notifications</dap-ds-checkbox>
+  <dap-ds-checkbox>SMS notifications</dap-ds-checkbox>
+</fieldset>
+
+<!-- Select dropdown -->
+<dap-ds-select placeholder="Choose option">
+  <option value="1">Option 1</option>
+  <option value="2">Option 2</option>
+</dap-ds-select>
+```
+
+## Framework Integration
+
+### React Integration (https://services.gov.hu/design-system-dev/frameworks/react)
+```jsx
+import { DapDSButtonReact as Button } from 'dap-design-system/react'
+
+function MyComponent() {
+  return (
+    <Button 
+      variant="outline" 
+      onClick={() => console.log('clicked')}
+    >
+      React Button
+    </Button>
+  )
+}
+```
+
+Using raw web components in React (without wrappers):
+```jsx
+import { useEffect, useRef } from 'react'
+import 'dap-design-system/dist/light.theme.css'
+import 'dap-design-system'
+
+export function RawButton() {
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const handler = () => console.log('clicked')
+    el.addEventListener('click', handler)
+    return () => el.removeEventListener('click', handler)
+  }, [])
+  return <dap-ds-button ref={ref} variant="primary">Click me</dap-ds-button>
+}
+```
+
+### Next.js Integration (https://services.gov.hu/design-system-dev/frameworks/next)
+- Use dynamic imports for SSR compatibility
+- Import CSS themes in `app/layout.tsx` or `_app.tsx`
+- Web components require client-side rendering
+
+Example with `next/dynamic`:
+```tsx
+// app/components/ClientButton.tsx
+'use client'
+import dynamic from 'next/dynamic'
+import 'dap-design-system/dist/light.theme.css'
+const Button = dynamic(() => import('dap-design-system').then(() => 'dap-ds-button'), { ssr: false })
+
+export default function ClientButton() {
+  return <Button variant="primary">Continue</Button>
+}
+```
+
+### Angular Integration (https://services.gov.hu/design-system-dev/frameworks/angular)
+- Add CUSTOM_ELEMENTS_SCHEMA to modules
+- Import web components in main.ts
+- Use property binding for attributes
+
+### Vue Integration (https://services.gov.hu/design-system-dev/frameworks/vue)
+- Configure Vue to ignore custom elements
+- Use v-bind for dynamic properties
+- Handle events with v-on
+
+### Svelte Integration (https://services.gov.hu/design-system-dev/frameworks/svelte)
+- No special configuration needed
+- Use bind:property for two-way binding
+- Handle events with on:eventName
+
+## Design Tokens Reference
+
+### Color Categories (https://services.gov.hu/design-system-dev/designtokens/colors)
+- Brand colors: `--dds-indigo-*`, `--dds-azure-*`
+- Neutral colors: `--dds-neutral-*` 
+- Semantic colors: `--dds-positive-*`, `--dds-negative-*`, `--dds-warning-*`
+- Text colors: `--dds-text-*`
+- Background colors: `--dds-background-*`
+
+### Spacing Scale (https://services.gov.hu/design-system-dev/designtokens/sizes)
+- `--dds-spacing-0` through `--dds-spacing-1600`
+- Exponential scale for consistent spacing
+- Use for padding, margin, gaps
+
+### Typography Scale (https://services.gov.hu/design-system-dev/designtokens/typography)
+- Font sizes: `--dds-font-size-*`
+- Line heights: `--dds-font-line-height-*`
+- Font weights: `--dds-font-weight-*`
+- Font families: `--dds-font-family-*`
+
+### Border Radius (https://services.gov.hu/design-system-dev/designtokens/sizes)
+- `--dds-radius-none` through `--dds-radius-full`
+- Consistent corner rounding system
+
+### Animation Tokens (https://services.gov.hu/design-system-dev/designtokens/animation)
+- Duration: `--dds-duration-*`
+- Easing: `--dds-easing-*`
+- Transitions for consistent motion
+
+## Accessibility Features
+
+### Built-in Accessibility
+- ARIA attributes automatically applied
+- Keyboard navigation support
+- Screen reader compatibility
+- Focus management
+- Color contrast compliance
+
+### Accessibility Guidelines
+- Always provide `aria-label` for icon-only buttons
+- Use semantic HTML elements
+- Provide clear focus indicators
+- Support high contrast mode
+- Test with screen readers
+
+Additional guidance for forms:
+- Associate labels using `dap-ds-label` wrapping or `aria-labelledby`
+- Ensure error messages are programmatically associated with inputs
+- Preserve accessible names when adding icons/text via slots
+
+## Theme System
+
+### Light Theme (Default)
+```css
+@import 'dap-design-system/dist/light.theme.css';
+```
+
+### Dark Theme Support
+- Custom dark theme implementation possible
+- Override color tokens for dark mode
+- Automatic high contrast mode support
+
+### Custom Theming
+```css
+:root {
+  --dds-indigo-500: #custom-brand-color;
+  --dds-background-base: #custom-background;
+  --dds-text-base: #custom-text-color;
+}
+```
+
+## Performance Considerations
+
+### Lazy Loading
+- Components load only when used
+- Tree-shaking support for smaller bundles
+- CDN delivery for optimal performance
+
+### Browser Support
+- Modern browsers (Chrome, Firefox, Safari, Edge)
+- Progressive enhancement approach
+- Polyfills available for older browsers
+
+## Development Guidelines
+
+### When to Use Each Component
+- Use `dap-ds-button` for actions and navigation
+- Use `dap-ds-link` for navigation without button styling
+- Use `dap-ds-callout` for important information
+- Use `dap-ds-banner` for system-level messages
+- Use `dap-ds-modal` for critical interactions
+- Use `dap-ds-tooltip` for helpful hints
+
+### Component Composition
+- Nest components for complex layouts
+- Use `dap-ds-stack` for consistent spacing
+- Combine icons with text for clarity
+- Layer feedback components appropriately
+
+### Do / Don't Checklist for LLMs
+Do:
+- Include a theme stylesheet in any UI example
+- Use documented attributes, slots, and variants
+- Prefer tokens (`--dds-*`) over hardcoded values
+- Add accessibility attributes where relevant (e.g., `aria-label`)
+
+Don't:
+- Don't hardcode colors, spacing, or fonts
+- Don't assume SSR for web components; use client-only when needed
+- Don't query or style internal shadow DOM without `::part`
+- Don't invent attributes or events not shown in docs
+
+### Error Handling
+- Validate required attributes
+- Provide fallback content
+- Handle missing dependencies gracefully
+- Use feedback components for user errors
+
+### Common Pitfalls
+- Missing theme CSS → components look unstyled. Always import a theme.
+- Using camelCase attributes in HTML → use kebab-case in markup.
+- Attaching React `onEvent` to raw web components → use `addEventListener` via a ref.
+- Hardcoded inline styles → prefer tokens and CSS custom properties.
+
+This documentation provides the foundation for working with the DÁP Design System web component library. Each component includes detailed documentation with examples, attributes, events, and styling options.
