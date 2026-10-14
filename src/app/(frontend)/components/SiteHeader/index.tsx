@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import logo from '@/app/(frontend)/components/SiteHeader/logo-feher.svg';
+import logo from '@/app/(frontend)/components/SiteHeader/logo-kek.svg';
 
 export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-(--dds-z-index-50) h-(--header-height) bg-(--dds-background-brand-base-inverted)">
-      <div className="mx-auto flex h-full max-w-3xl items-center justify-between px-4">
+    <header className="sticky top-0 z-(--dds-z-index-50) border-b border-border-divider bg-bg">
+      <div className="mx-auto flex h-(--header-height) max-w-(--dds-containers-xlarge) items-center justify-between px-4">
         <Link href="/">
           <Image
             src={logo}
@@ -18,7 +18,7 @@ export default function SiteHeader() {
         </Link>
         <dap-ds-icon-button
           icon="search-line"
-          variant="inverted"
+          variant="brand"
           htmlType="button"
           aria-label="Keresés"
         ></dap-ds-icon-button>
