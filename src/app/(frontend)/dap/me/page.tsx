@@ -8,6 +8,11 @@ import { SiteHeader } from '@/app/(frontend)/components/SiteHeader';
 import { getDemoCitizen } from '@/app/(frontend)/dap/me/demo-citizen';
 import { RegistrationApplication } from '@/app/(frontend)/dap/me/RegistrationApplication';
 import {
+  APPOINTMENT_STATUS_BADGES,
+  APPOINTMENT_STATUS_LABELS,
+  APPOINTMENT_STATUS_LIST_ITEMS,
+} from '@/lib/appointment-status';
+import {
   ACTIVE_REGISTRATION_STATUSES,
   REGISTRATION_STATUS_BADGES,
   REGISTRATION_STATUS_LABELS,
@@ -15,7 +20,7 @@ import {
 import { formatTaj } from '@/lib/taj';
 import config from '@/payload.config';
 
-import type { Registration } from '@/payload-types';
+import type { Appointment, Registration } from '@/payload-types';
 
 export const metadata: Metadata = {
   title: 'Saját adataim (demó) • Digi Kiskönyv',
@@ -49,7 +54,40 @@ function DetailList({ details }: { details: Detail[] }) {
   );
 }
 
-function RegistrationCard({ registration }: { registration: Registration }) {
+function AppointmentList({ appointments }: { appointments: Appointment[] }) {
+  return (
+    // Safari (VoiceOver) drops list semantics when list-style is none, so the role is not redundant
+    // oxlint-disable-next-line jsx-a11y/no-redundant-roles
+    <ul role="list" className="flex list-none flex-col gap-2">
+      {appointments.map(({ id, title, scheduledAt, status }) => (
+        <li key={id}>
+          <dap-ds-list-item
+            title={title}
+            {...APPOINTMENT_STATUS_LIST_ITEMS[status]}
+          >
+            <time dateTime={scheduledAt}>
+              {dateTimeFormat.format(new Date(scheduledAt))}
+            </time>
+            <dap-ds-badge
+              slot="actions"
+              type={APPOINTMENT_STATUS_BADGES[status]}
+            >
+              {APPOINTMENT_STATUS_LABELS[status]}
+            </dap-ds-badge>
+          </dap-ds-list-item>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function RegistrationCard({
+  registration,
+  appointments,
+}: {
+  registration: Registration;
+  appointments: Appointment[];
+}) {
   const { status, requestedAt, startDate } = registration;
 
   const details: Detail[] = [
@@ -76,7 +114,17 @@ function RegistrationCard({ registration }: { registration: Registration }) {
         </span>
       </dap-ds-card-title>
       <dap-ds-card-content>
-        <DetailList details={details} />
+        <div className="flex flex-col gap-6">
+          <DetailList details={details} />
+          {appointments.length > 0 && (
+            <section className="flex flex-col gap-3">
+              <dap-ds-typography variant="h3">
+                Előírt jelentkezések
+              </dap-ds-typography>
+              <AppointmentList appointments={appointments} />
+            </section>
+          )}
+        </div>
       </dap-ds-card-content>
     </dap-ds-card>
   );
@@ -103,6 +151,16 @@ export default async function CitizenPage() {
     depth: 0,
   });
 
+  const { docs: appointments } = activeRegistration
+    ? await payload.find({
+        collection: 'appointments',
+        where: { registration: { equals: activeRegistration.id } },
+        sort: 'scheduledAt',
+        pagination: false,
+        depth: 0,
+      })
+    : { docs: [] };
+
   const personalDetails: Detail[] = [
     { label: 'Születési hely', value: citizen.placeOfBirth },
     {
@@ -117,7 +175,7 @@ export default async function CitizenPage() {
     <div className="flex min-h-screen flex-col bg-bg-base">
       <SiteHeader />
 
-      <main className="mx-auto flex w-full max-w-(--dds-containers-large) flex-1 flex-col gap-6 px-4 py-8 md:py-12">
+      <main className="mx-auto flex w-full max-w-(--dds-containers-large) flex-1 flex-col gap-6 px-4 py-8 md:py-12 [&_dap-ds-card]:[--dds-card-background:var(--dds-background-neutral-subtle)]">
         <div className="flex flex-col items-start gap-2">
           <dap-ds-badge type="warning">DEMO</dap-ds-badge>
           <dap-ds-typography variant="h1">{citizen.name}</dap-ds-typography>
@@ -134,7 +192,10 @@ export default async function CitizenPage() {
         </dap-ds-card>
 
         {activeRegistration ? (
-          <RegistrationCard registration={activeRegistration} />
+          <RegistrationCard
+            registration={activeRegistration}
+            appointments={appointments}
+          />
         ) : (
           <dap-ds-callout
             variant="info"
