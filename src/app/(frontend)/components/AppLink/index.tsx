@@ -37,6 +37,9 @@ export function AppLink(props: AppLinkProps) {
   const { href } = props;
   const router = useRouter();
   const isInternal = href.startsWith('/');
+  const external = /^https?:\/\//.test(href)
+    ? ({ target: '_blank', rel: 'noopener noreferrer' } as const)
+    : {};
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -65,6 +68,7 @@ export function AppLink(props: AppLinkProps) {
     return (
       <dap-ds-button
         href={href}
+        {...external}
         variant={variant}
         size={size}
         className={className}
@@ -80,6 +84,7 @@ export function AppLink(props: AppLinkProps) {
   return (
     <dap-ds-link
       href={href}
+      {...external}
       variant={variant}
       size={size}
       bold={bold}

@@ -1,67 +1,74 @@
-# Payload Blank Template
+# Álláskeresők Digitális Kiskönyve (demo)
 
-This template comes configured with the bare minimum to get started on anything you need.
+A digital version of the Hungarian paper "job seeker's booklet" (_Álláskeresők kiskönyve_). Registered job seekers must report to the employment office on set dates, and the office's stamp in the booklet is their only proof that they showed up. The paper booklet is easy to lose, and the stamp lives on paper only.
 
-## Quick start
+This app keeps both jobs of the booklet: it **reminds** the citizen of the next required appointment, and it gives them **proof** of attendance on their side.
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+> **Demo only.** All data is fictional, e-mail addresses are `@example.com`, and the "Sign in with DÁP" button is a mock.
 
-## Quick Start - local setup
+## What it shows
 
-To spin up this template locally, follow these steps:
+- **Next.js (App Router) + Payload CMS 3 in one app.** Payload provides the admin UI, auth, access control, hooks and the database layer; the citizen pages are plain Next.js routes using the Payload Local API and server actions.
+- **DÁP Design System** Used on the citizen side, with Tailwind for layout only, bound to the DÁP design tokens.
+- **Postgres** Docker locally, Neon in production.
+- **Access control in the data layer**, not in the UI: collection and field level rules, server-side checks in every server action.
+- **Vitest** for the pure logic.
 
-### Clone
+## Features
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+**Citizen (`/dap/me`, behind the mock DÁP sign-in)**
 
-### Development
+- Personal details, applying for registration as a job seeker, and the status of the application.
+- The required appointments of an approved registration with their status.
+- **Check-in code:** for the next appointment the citizen opens a QR code plus a 6-digit code. It is valid for 60 seconds and refreshes automatically.
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+**Clerk (Payload admin, `/admin`)**
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+- Reviewing registrations. On approval, three appointments are created automatically (first one a week after the start date, then monthly).
+- **Recording attendance (the "stamp")** on `/admin/check-in`: scan the QR code or type the 6 digits. The attendance is visible to the citizen right away.
+- Manual fallback: the stamp can also be recorded from the appointment page without a code (e.g. the citizen's phone is dead). The method (`code` / `manual`) is stored.
+- A stamp can only be created, never edited or deleted. Only a stamp can mark an appointment as attended, and only once.
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+## Decisions
 
-#### Docker (Optional)
+**A short code instead of a JWT in the QR code.** Clerks sit at a desktop and may not have a camera. A barcode scanner, however, behaves like a keyboard: it types the content and presses Enter. A 6-digit code works with a scanner, with a webcam, and can be read out loud and typed. A JWT cannot be typed, and it makes a dense QR code that is hard to scan from a phone screen. The trade-off is server state (one row per code) and a small code space. This is mitigated by a 60-second lifetime, single use (the code is deleted when redeemed), and the clerk having to be signed in.
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+**Codes are invisible in the admin.** The `check-in-codes` collection is closed on every API, and only server code reaches it. A clerk cannot read a code and stamp an attendance without the citizen being there.
 
-To do so, follow these steps:
+**The QR code is rendered on the server.** The server action returns an SVG data URI for an `<img alt>`. The QR library stays out of the client bundle, and no `dangerouslySetInnerHTML` is needed.
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+**One appointment per citizen, no many-to-many.** In reality one session at the office invites many people. The realistic model would be an `events` collection with `appointments` as the join table, and the stamp would still point at the per-person record. That only makes the clerk side more realistic and would not change anything the citizen sees, so the demo keeps the simpler model.
 
-## How it works
+**Denormalized `citizen` on appointments and attendances.** Hooks copy it from the registration, which keeps the citizen's read access a simple `citizen equals user.id`.
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+**Hooks over UI checks.** Approval creates appointments in the same transaction (`req` passed through), so a failure rolls back the approval too. The attendance hook marks the appointment attended through a `req.context` flag, which is the only way to reach that status.
 
-### Collections
+## Limitations
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+- **Mock sign-in.** `/dap/me` shows the most recently created citizen, without real authentication. Everyone who opens the demo sees the same citizen. Real DÁP (eID) integration would replace this with a Payload auth strategy.
+- **Registration state machine not enforced yet.** Allowed status transitions, a required start date on approval, and one active registration per citizen are not validated in the admin yet. For example, re-approving a registration creates its appointments again.
+- **No time window for check-in.** The code is offered for the next scheduled appointment, regardless of its date. In production it would be limited to the day of the appointment.
+- **No rate limiting** on code redemption. The short lifetime makes guessing unlikely, but production would need it.
+- **Not built yet:** signed attendance certificate (Ed25519 JWS + public verification page), rejected and closed states on the citizen page, end-to-end tests (Playwright + axe).
 
-- #### Users (Authentication)
+## Running locally
 
-  Users are auth-enabled collections that have access to the admin panel.
+Requirements: Node ≥ 20.18, pnpm 11, Docker.
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+```bash
+cp .env.example .env            # set PAYLOAD_SECRET (openssl rand -hex 32)
+docker compose up -d            # Postgres 17 + Mailpit (http://localhost:8025)
+pnpm install
+pnpm seed                       # admin user from SEED_ADMIN_* + the demo citizen
+pnpm dev                        # http://localhost:3000
+```
 
-- #### Media
+- Citizen side: `/login` → "DÁP mobilalkalmazás" (simulated sign-in) → `/dap/me`. Admin: `/admin` with the seeded admin user.
+- Locally the database schema is applied in Payload's **push mode**. After a schema change, create a migration with `pnpm migrate:create <name>` and review it before committing.
+- Reset the local database: `docker compose down -v`, then run the steps above again.
+- After config changes: `pnpm generate:types` (and `pnpm generate:importmap` for admin components).
+- Checks: `pnpm lint`, `pnpm fmt:check`, `npx vitest run tests/unit`.
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+## Deployment
 
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+Vercel + Neon. `scripts/vercel-build.mjs` runs pending migrations in production. On preview deployments it rebuilds the schema and seeds fictional data (`migrate:fresh` + seed). Production data never reaches preview.

@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { AppLink } from '@/app/(frontend)/components/AppLink';
+import { GithubIcon } from '@/app/(frontend)/components/GithubIcon';
 import logo from '@/app/(frontend)/components/SiteHeader/logo-kek.svg';
 
 export function SiteHeader() {
@@ -16,12 +18,24 @@ export function SiteHeader() {
             unoptimized
           />
         </Link>
-        <dap-ds-icon-button
-          icon="search-line"
-          variant="brand"
-          htmlType="button"
-          aria-label="Keresés"
-        ></dap-ds-icon-button>
+        <div className='flex items-center gap-3'>
+          <AppLink
+            as="button"
+            variant="subtle"
+            size="sm"
+            className="button-with-icon"
+            href="https://github.com/nemethricsi/digi-kiskonyv"
+          >
+            <GithubIcon className="size-(--dds-icon-small)" />
+            GitHub
+          </AppLink>
+          <dap-ds-icon-button
+            icon="search-line"
+            variant="brand"
+            htmlType="button"
+            aria-label="Keresés"
+          ></dap-ds-icon-button>
+        </div>
       </div>
     </header>
   );
