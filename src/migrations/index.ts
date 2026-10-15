@@ -4,6 +4,7 @@ import * as migration_20261013_191115_add_user_role from './20261013_191115_add_
 import * as migration_20261014_205215_add_registrations from './20261014_205215_add_registrations';
 import * as migration_20261014_210513_seed_demo_citizen from './20261014_210513_seed_demo_citizen';
 import * as migration_20261015_083025_add_appointments from './20261015_083025_add_appointments';
+import * as migration_20261015_111852_add_attendances_and_check_in_codes from './20261015_111852_add_attendances_and_check_in_codes';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261015_083025_add_appointments.up,
     down: migration_20261015_083025_add_appointments.down,
-    name: '20261015_083025_add_appointments'
+    name: '20261015_083025_add_appointments',
+  },
+  {
+    up: migration_20261015_111852_add_attendances_and_check_in_codes.up,
+    down: migration_20261015_111852_add_attendances_and_check_in_codes.down,
+    name: '20261015_111852_add_attendances_and_check_in_codes'
   },
 ];

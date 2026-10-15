@@ -6,6 +6,7 @@ import { getPayload } from 'payload';
 import { DemoWarning } from '@/app/(frontend)/components/DemoWarning';
 import { SiteFooter } from '@/app/(frontend)/components/SiteFooter';
 import { SiteHeader } from '@/app/(frontend)/components/SiteHeader';
+import { CheckInCodeButton } from '@/app/(frontend)/dap/me/CheckInCodeButton';
 import { getDemoCitizen } from '@/app/(frontend)/dap/me/demo-citizen';
 import { RegistrationApplication } from '@/app/(frontend)/dap/me/RegistrationApplication';
 import {
@@ -56,6 +57,12 @@ function DetailList({ details }: { details: Detail[] }) {
 }
 
 function AppointmentList({ appointments }: { appointments: Appointment[] }) {
+  // The code is offered only for the next appointment (sorted by scheduledAt).
+  // In production this would also check the date (e.g. only on the day itself).
+  const nextScheduledId = appointments.find(
+    ({ status }) => status === 'scheduled',
+  )?.id;
+
   return (
     // Safari (VoiceOver) drops list semantics when list-style is none, so the role is not redundant
     // oxlint-disable-next-line jsx-a11y/no-redundant-roles
@@ -75,6 +82,11 @@ function AppointmentList({ appointments }: { appointments: Appointment[] }) {
             >
               {APPOINTMENT_STATUS_LABELS[status]}
             </dap-ds-badge>
+            {id === nextScheduledId && (
+              <div slot="actions">
+                <CheckInCodeButton appointmentId={id} />
+              </div>
+            )}
           </dap-ds-list-item>
         </li>
       ))}

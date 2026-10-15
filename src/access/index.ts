@@ -3,7 +3,7 @@ import { User } from '@/payload-types';
 import type { Role } from '@/lib/roles';
 import type { Access, PayloadRequest } from 'payload';
 
-function hasRole(
+export function hasRole(
   user: PayloadRequest['user'],
   ...roles: [Role, ...Role[]]
 ): boolean {

@@ -72,6 +72,8 @@ export interface Config {
     appointments: Appointment;
     media: Media;
     users: User;
+    attendances: Attendance;
+    'check-in-codes': CheckInCode;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -91,6 +93,8 @@ export interface Config {
     appointments: AppointmentsSelect<false> | AppointmentsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    attendances: AttendancesSelect<false> | AttendancesSelect<true>;
+    'check-in-codes': CheckInCodesSelect<false> | CheckInCodesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -237,6 +241,35 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendances".
+ */
+export interface Attendance {
+  id: string;
+  appointment: string | Appointment;
+  /**
+   * Az időpontból töltődik ki.
+   */
+  citizen?: (string | null) | Citizen;
+  recordedAt?: string | null;
+  recordedBy?: (string | null) | User;
+  method: 'manual' | 'code';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "check-in-codes".
+ */
+export interface CheckInCode {
+  id: string;
+  appointment: string | Appointment;
+  code: string;
+  expiresAt: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -278,6 +311,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'attendances';
+        value: string | Attendance;
+      } | null)
+    | ({
+        relationTo: 'check-in-codes';
+        value: string | CheckInCode;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -404,6 +445,30 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendances_select".
+ */
+export interface AttendancesSelect<T extends boolean = true> {
+  appointment?: T;
+  citizen?: T;
+  recordedAt?: T;
+  recordedBy?: T;
+  method?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "check-in-codes_select".
+ */
+export interface CheckInCodesSelect<T extends boolean = true> {
+  appointment?: T;
+  code?: T;
+  expiresAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
