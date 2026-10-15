@@ -14,6 +14,22 @@ This app keeps both jobs of the booklet: it **reminds** the citizen of the next 
 - **Access control in the data layer**, not in the UI: collection and field level rules, server-side checks in every server action.
 - **Vitest** for the pure logic.
 
+## How to use it
+
+On the frontend ther is only one demo user, that's loaded automatically.
+
+Users for the `Payload admin`:
+
+- Clerk:
+  email: `clerk@example.com`
+  pwd: `pass.pass`
+
+- Admin:
+  email: `admin@example.com`
+  pwd: `pass.pass`
+
+You can start over any time by being logged-in with the `admin` user and reset database from the Payload admin.
+
 ## Features
 
 **Citizen (`/dap/me`, behind the mock DÁP sign-in)**
