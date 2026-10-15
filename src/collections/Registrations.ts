@@ -1,13 +1,42 @@
 import { hasAccess } from '@/access';
 import {
+  DEFAULT_APPOINTMENT_TITLE,
+  defaultAppointmentDates,
+} from '@/lib/default-appointments';
+import {
   REGISTRATION_STATUS_LABELS,
   REGISTRATION_STATUSES,
 } from '@/lib/registration-status';
 
 import type { RegistrationStatus } from '@/lib/registration-status';
-import type { CollectionConfig } from 'payload';
+import type { Registration } from '@/payload-types';
+import type { CollectionAfterChangeHook, CollectionConfig } from 'payload';
 
-// The job seeker request AND the job seeking period in one record (see docs/project-summary.md)
+const createDefaultAppointments: CollectionAfterChangeHook<
+  Registration
+> = async ({ doc, previousDoc, req }) => {
+  const approved: RegistrationStatus = 'approved';
+  if (doc.status !== approved || previousDoc?.status === approved) {
+    return doc;
+  }
+
+  const startDate = doc.startDate ? new Date(doc.startDate) : new Date();
+  for (const scheduledAt of defaultAppointmentDates(startDate)) {
+    await req.payload.create({
+      collection: 'appointments',
+      data: {
+        registration: doc.id,
+        title: DEFAULT_APPOINTMENT_TITLE,
+        scheduledAt: scheduledAt.toISOString(),
+        status: 'scheduled',
+      },
+      req, // same transaction: if one fails, the approval is rolled back too
+    });
+  }
+
+  return doc;
+};
+
 export const Registrations: CollectionConfig = {
   slug: 'registrations',
   labels: {
@@ -23,6 +52,9 @@ export const Registrations: CollectionConfig = {
     create: hasAccess('admin', 'clerk'),
     update: hasAccess('admin', 'clerk'),
     delete: hasAccess('admin'),
+  },
+  hooks: {
+    afterChange: [createDefaultAppointments],
   },
   fields: [
     {
