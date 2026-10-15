@@ -3,6 +3,7 @@ import * as migration_20261013_163629_add_citizens from './20261013_163629_add_c
 import * as migration_20261013_191115_add_user_role from './20261013_191115_add_user_role';
 import * as migration_20261014_205215_add_registrations from './20261014_205215_add_registrations';
 import * as migration_20261014_210513_seed_demo_citizen from './20261014_210513_seed_demo_citizen';
+import * as migration_20261015_083025_add_appointments from './20261015_083025_add_appointments';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261014_210513_seed_demo_citizen.up,
     down: migration_20261014_210513_seed_demo_citizen.down,
-    name: '20261014_210513_seed_demo_citizen'
+    name: '20261014_210513_seed_demo_citizen',
+  },
+  {
+    up: migration_20261015_083025_add_appointments.up,
+    down: migration_20261015_083025_add_appointments.down,
+    name: '20261015_083025_add_appointments'
   },
 ];
