@@ -3,7 +3,7 @@ import { isValidTaj, normalizeTaj } from '@/lib/taj';
 
 import type { CollectionConfig } from 'payload';
 
-export const Citizen: CollectionConfig = {
+export const Citizens: CollectionConfig = {
   slug: 'citizens',
   labels: {
     plural: 'Állampolgárok',

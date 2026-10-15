@@ -9,7 +9,7 @@ import sharp from 'sharp';
 import { fileURLToPath } from 'url';
 
 import { Appointments } from '@/collections/Appointments';
-import { Citizen } from '@/collections/Citizen';
+import { Citizens } from '@/collections/Citizens';
 import { Media } from '@/collections/Media';
 import { Registrations } from '@/collections/Registrations';
 import { Users } from '@/collections/Users';
@@ -41,7 +41,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Citizen, Registrations, Appointments, Media, Users],
+  collections: [Citizens, Registrations, Appointments, Media, Users],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,
   typescript: {
