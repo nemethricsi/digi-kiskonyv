@@ -1,6 +1,7 @@
 import { getImageProps } from 'next/image';
 
 import { AppLink } from '@/app/(frontend)/components/AppLink';
+import { DemoWarning } from '@/app/(frontend)/components/DemoWarning';
 import illustrationMobile from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_3_f4b789aaf2.svg';
 import illustrationDesktop from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_allo_4_09ed058980.svg';
 import { PrinterLineIcon } from '@/app/(frontend)/components/icons/PrinterLineIcon';
@@ -26,6 +27,7 @@ export function Hero() {
     <section className="relative bg-(--dds-background-brand-base-inverted) pt-12 pb-20 md:pt-20 md:pb-28">
       <div className="mx-auto grid max-w-(--dds-containers-xlarge) items-center gap-10 px-4 md:grid-cols-2">
         <div className="flex flex-col items-start gap-6">
+          <DemoWarning />
           <div className="flex flex-wrap gap-3">
             <dap-ds-button
               variant="subtle-inverted"

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 
 import { AppLink } from '@/app/(frontend)/components/AppLink';
+import { DemoWarning } from '@/app/(frontend)/components/DemoWarning';
 import { SiteFooter } from '@/app/(frontend)/components/SiteFooter';
 import appStoreBadge from '@/app/(frontend)/login/app-store.svg';
 import illustration from '@/app/(frontend)/login/hand-2.svg';
@@ -39,6 +40,7 @@ export default function LoginPage() {
             >
               DÁP mobilalkalmazás
             </AppLink>
+            <DemoWarning />
           </section>
 
           <aside className="flex flex-col gap-4 overflow-hidden rounded-(--dds-radius-large) bg-(--dds-background-brand-base-inverted) p-6 md:p-12">
