@@ -1,5 +1,7 @@
 # Álláskeresők Digitális Kiskönyve (demo)
 
+![Álláskeresők Digitális Kiskönyve](<src/app/(frontend)/opengraph-image.png>)
+
 A digital version of the Hungarian paper "job seeker's booklet" (_Álláskeresők kiskönyve_). Registered job seekers must report to the employment office on set dates, and the office's stamp in the booklet is their only proof that they showed up. The paper booklet is easy to lose, and the stamp lives on paper only.
 
 This app keeps both jobs of the booklet: it **reminds** the citizen of the next required appointment, and it gives them **proof** of attendance on their side.
@@ -29,6 +31,16 @@ Users for the `Payload admin`:
   pwd: `pass.pass`
 
 You can start over any time by being logged-in with the `admin` user and reset database from the Payload admin.
+
+### Steps
+
+1. Go to the home page and login with the fake "DÁP bejelentkezés". You should see the demo citizen (Gipsz Jakab) details.
+2. Start a registration with the `Jelentkezés` button.
+3. Login to the Payload backend with the `Clerk` user. Find the pending Registration and **Approve** it with a **start date**.
+4. Go back to the [`/dap/me`](https://digi-kiskonyv.vercel.app/dap/me) page, refresh and note your registration is accepted and you have a list of appointments.
+5. When at the appointment, use the `Pecsét` button to generate a short living unique QR code and "show it" to the clerk.
+6. On the Payload admin, as a clerk, go to [Megjelenés rögzítése](https://digi-kiskonyv.vercel.app/admin/check-in), type the code or read the QR code with a reader.
+7. Attendance should be registered.
 
 ## Features
 

@@ -18,9 +18,23 @@ const inter = localFont({
   ],
 });
 
+const siteName = 'Digi Kiskönyv';
+
 export const metadata: Metadata = {
-  description: 'Álláskeresők Digitális Kiskönyve (Demo)',
-  title: 'Digi Kiskönyv',
+  title: {
+    default: `${siteName} – Álláskeresők Digitális Kiskönyve (demó)`,
+    template: `%s • ${siteName}`,
+  },
+  description:
+    'Az Álláskeresők kiskönyvének digitális változata: emlékeztet a következő kötelező megjelenésre, és igazolja, hogy ott voltál. Demó, kitalált adatokkal.',
+  openGraph: {
+    type: 'website',
+    locale: 'hu_HU',
+    siteName,
+    title: `${siteName} – Álláskeresők Digitális Kiskönyve (demó)`,
+    description:
+      'Emlékeztet a következő kötelező megjelenésre, és igazolja, hogy ott voltál. Demó, kitalált adatokkal.',
+  },
 };
 
 export default function RootLayout({

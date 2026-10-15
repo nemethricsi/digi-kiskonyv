@@ -9,7 +9,7 @@ import illustration from '@/app/(frontend)/login/hand-2.svg';
 import playStoreBadge from '@/app/(frontend)/login/play-store.svg';
 
 export const metadata: Metadata = {
-  title: 'Bejelentkezés (demó) • Digi Kiskönyv',
+  title: 'Bejelentkezés (demó)',
 };
 
 export default function LoginPage() {

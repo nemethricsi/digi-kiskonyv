@@ -25,7 +25,7 @@ import config from '@/payload.config';
 import type { Appointment, Registration } from '@/payload-types';
 
 export const metadata: Metadata = {
-  title: 'Saját adataim (demó) • Digi Kiskönyv',
+  title: 'Saját adataim (demó)',
 };
 
 export const dynamic = 'force-dynamic';
