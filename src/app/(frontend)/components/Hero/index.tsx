@@ -34,7 +34,6 @@ export function Hero() {
               variant="subtle-inverted"
               size="sm"
               htmlType="button"
-              disabled
             >
               <dap-ds-stack direction="row">
                 <span>Megosztás</span>
