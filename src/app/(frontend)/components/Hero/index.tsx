@@ -4,7 +4,8 @@ import { AppLink } from '@/app/(frontend)/components/AppLink';
 import { DemoWarning } from '@/app/(frontend)/components/DemoWarning';
 import illustrationMobile from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_3_f4b789aaf2.svg';
 import illustrationDesktop from '@/app/(frontend)/components/Hero/elvesztettem_a_munkam_allo_4_09ed058980.svg';
-import { PrinterLineIcon } from '@/app/(frontend)/components/icons/PrinterLineIcon';
+import { GithubIcon } from '@/app/(frontend)/components/icons/GithubIcon';
+import { EXTERNAL_LINK_PROPS, GITHUB_URL } from '@/lib/constants';
 
 /**
  * Art Direction as from Next.js docs
@@ -42,10 +43,13 @@ export function Hero() {
               variant="subtle-inverted"
               size="sm"
               htmlType="button"
-              className="button-with-icon"
+              href={GITHUB_URL}
+              {...EXTERNAL_LINK_PROPS}
             >
-              Nyomtatás
-              <PrinterLineIcon className="size-(--dds-icon-small)" />
+              <dap-ds-stack direction="row">
+                <span>GitHub</span>
+                <GithubIcon className="size-(--dds-icon-small)" />
+              </dap-ds-stack>
             </dap-ds-button>
           </div>
 

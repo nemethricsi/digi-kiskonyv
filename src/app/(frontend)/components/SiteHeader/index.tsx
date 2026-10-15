@@ -4,8 +4,9 @@ import Link from 'next/link';
 
 import { getPayload } from 'payload';
 
-import { GithubIcon } from '@/app/(frontend)/components/GithubIcon';
+import { GithubIcon } from '@/app/(frontend)/components/icons/GithubIcon';
 import logo from '@/app/(frontend)/components/SiteHeader/logo-kek.svg';
+import { EXTERNAL_LINK_PROPS, GITHUB_URL } from '@/lib/constants';
 import config from '@/payload.config';
 
 export async function SiteHeader() {
@@ -42,11 +43,7 @@ export async function SiteHeader() {
                 <span>{user ? `${user.role} Payload` : 'Payload'}</span>
               </dap-ds-stack>
             </dap-ds-command-item>
-            <dap-ds-command-item
-              href="https://github.com/nemethricsi/digi-kiskonyv"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <dap-ds-command-item href={GITHUB_URL} {...EXTERNAL_LINK_PROPS}>
               <dap-ds-stack direction="row">
                 <GithubIcon className="size-(--dds-icon-small)" />
                 <span>GitHub</span>

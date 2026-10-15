@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 
+import { EXTERNAL_LINK_PROPS } from '@/lib/constants';
+
 import type {
   ButtonSize,
   ButtonVariant,
@@ -37,9 +39,7 @@ export function AppLink(props: AppLinkProps) {
   const { href } = props;
   const router = useRouter();
   const isInternal = href.startsWith('/');
-  const external = /^https?:\/\//.test(href)
-    ? ({ target: '_blank', rel: 'noopener noreferrer' } as const)
-    : {};
+  const external = /^https?:\/\//.test(href) ? EXTERNAL_LINK_PROPS : {};
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
