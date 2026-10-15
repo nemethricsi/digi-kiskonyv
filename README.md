@@ -2,7 +2,8 @@
 
 A **proof of concept** for a digital version of the Hungarian paper "job seeker's booklet" (_Álláskeresők kiskönyve_). Registered job seekers must report to the employment office on set dates, and the office's stamp in the booklet is their only proof that they showed up. The paper booklet is easy to lose, and the stamp lives on paper only.
 
-> [!WARNING] **Demo only.** All data is fictional, e-mail addresses are `@example.com`, and the "DÁP bejelentkezés" button is a mock.
+> [!WARNING]
+> **Demo only.** All data is fictional, e-mail addresses are `@example.com`, and the "DÁP bejelentkezés" button is a mock.
 
 ![Álláskeresők Digitális Kiskönyve](<src/app/(frontend)/opengraph-image.png>)
 
