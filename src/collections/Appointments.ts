@@ -1,6 +1,7 @@
 import { ValidationError } from 'payload';
 
 import { hasAccess } from '@/access';
+import { appointmentLabel } from '@/lib/appointment-label';
 import {
   APPOINTMENT_STATUS_LABELS,
   APPOINTMENT_STATUSES,
@@ -119,6 +120,35 @@ const validateAndFill: CollectionBeforeChangeHook = async ({
   return data;
 };
 
+// Runs after validateAndFill, which sets the citizen
+const fillLabel: CollectionBeforeChangeHook = async ({
+  data,
+  originalDoc,
+  req,
+}) => {
+  const citizenId = relationId(data.citizen ?? originalDoc?.citizen);
+  const scheduledAt = data.scheduledAt ?? originalDoc?.scheduledAt;
+  const title = data.title ?? originalDoc?.title;
+  if (!citizenId || !scheduledAt || !title) {
+    return data;
+  }
+
+  const citizen = await req.payload.findByID({
+    collection: 'citizens',
+    id: citizenId,
+    depth: 0,
+    select: { name: true },
+    req, // same transaction
+  });
+
+  data.label = appointmentLabel({
+    citizenName: citizen.name,
+    scheduledAt,
+    title,
+  });
+  return data;
+};
+
 export const Appointments: CollectionConfig = {
   slug: 'appointments',
   labels: {
@@ -126,7 +156,7 @@ export const Appointments: CollectionConfig = {
     singular: 'Előírt jelentkezés',
   },
   admin: {
-    useAsTitle: 'title',
+    useAsTitle: 'label',
     defaultColumns: ['scheduledAt', 'title', 'citizen', 'status'],
   },
   access: {
@@ -136,9 +166,14 @@ export const Appointments: CollectionConfig = {
     delete: hasAccess('admin'),
   },
   hooks: {
-    beforeChange: [protectAttendedStatus, validateAndFill],
+    beforeChange: [protectAttendedStatus, validateAndFill, fillLabel],
   },
   fields: [
+    {
+      name: 'label',
+      type: 'text',
+      admin: { hidden: true },
+    },
     {
       name: 'registration',
       label: 'Nyilvántartásba vétel',
@@ -193,6 +228,18 @@ export const Appointments: CollectionConfig = {
       relationTo: 'users',
       admin: {
         readOnly: true,
+      },
+    },
+    {
+      // Manual stamp from here: "Create new" fills in this appointment
+      name: 'attendance',
+      label: 'Megjelenés',
+      type: 'join',
+      collection: 'attendances',
+      on: 'appointment',
+      admin: {
+        defaultColumns: ['recordedAt', 'method', 'recordedBy'],
+        condition: (data) => Boolean(data?.id),
       },
     },
   ],

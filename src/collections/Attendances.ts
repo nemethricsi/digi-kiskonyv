@@ -81,6 +81,8 @@ const markAppointmentAttended: CollectionAfterChangeHook<Attendance> = async ({
   return doc;
 };
 
+const isSaved = (data: Partial<Attendance>) => Boolean(data?.id);
+
 // The "stamp": create only, nobody can change or delete it
 export const Attendances: CollectionConfig = {
   slug: 'attendances',
@@ -127,6 +129,7 @@ export const Attendances: CollectionConfig = {
       index: true,
       admin: {
         readOnly: true,
+        condition: isSaved,
         description: 'Az időpontból töltődik ki.',
       },
     },
@@ -136,6 +139,7 @@ export const Attendances: CollectionConfig = {
       type: 'date',
       admin: {
         readOnly: true,
+        condition: isSaved,
         date: { pickerAppearance: 'dayAndTime' },
       },
     },
@@ -146,6 +150,7 @@ export const Attendances: CollectionConfig = {
       relationTo: 'users',
       admin: {
         readOnly: true,
+        condition: isSaved,
       },
     },
     {

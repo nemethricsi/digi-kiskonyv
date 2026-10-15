@@ -5,6 +5,7 @@ import * as migration_20261014_205215_add_registrations from './20261014_205215_
 import * as migration_20261014_210513_seed_demo_citizen from './20261014_210513_seed_demo_citizen';
 import * as migration_20261015_083025_add_appointments from './20261015_083025_add_appointments';
 import * as migration_20261015_111852_add_attendances_and_check_in_codes from './20261015_111852_add_attendances_and_check_in_codes';
+import * as migration_20261015_113434_add_appointment_label from './20261015_113434_add_appointment_label';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20261015_111852_add_attendances_and_check_in_codes.up,
     down: migration_20261015_111852_add_attendances_and_check_in_codes.down,
-    name: '20261015_111852_add_attendances_and_check_in_codes'
+    name: '20261015_111852_add_attendances_and_check_in_codes',
+  },
+  {
+    up: migration_20261015_113434_add_appointment_label.up,
+    down: migration_20261015_113434_add_appointment_label.down,
+    name: '20261015_113434_add_appointment_label'
   },
 ];

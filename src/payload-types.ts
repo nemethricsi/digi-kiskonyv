@@ -86,6 +86,9 @@ export interface Config {
     registrations: {
       appointments: 'appointments';
     };
+    appointments: {
+      attendance: 'attendances';
+    };
   };
   collectionsSelect: {
     citizens: CitizensSelect<false> | CitizensSelect<true>;
@@ -181,6 +184,7 @@ export interface Registration {
  */
 export interface Appointment {
   id: string;
+  label?: string | null;
   registration: string | Registration;
   /**
    * A nyilvántartásba vételből töltődik ki.
@@ -190,6 +194,11 @@ export interface Appointment {
   scheduledAt: string;
   status: 'scheduled' | 'attended' | 'missed' | 'cancelled';
   createdBy?: (string | null) | User;
+  attendance?: {
+    docs?: (string | Attendance)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -222,6 +231,23 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendances".
+ */
+export interface Attendance {
+  id: string;
+  appointment: string | Appointment;
+  /**
+   * Az időpontból töltődik ki.
+   */
+  citizen?: (string | null) | Citizen;
+  recordedAt?: string | null;
+  recordedBy?: (string | null) | User;
+  method: 'manual' | 'code';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
@@ -238,23 +264,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "attendances".
- */
-export interface Attendance {
-  id: string;
-  appointment: string | Appointment;
-  /**
-   * Az időpontból töltődik ki.
-   */
-  citizen?: (string | null) | Citizen;
-  recordedAt?: string | null;
-  recordedBy?: (string | null) | User;
-  method: 'manual' | 'code';
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -395,12 +404,14 @@ export interface RegistrationsSelect<T extends boolean = true> {
  * via the `definition` "appointments_select".
  */
 export interface AppointmentsSelect<T extends boolean = true> {
+  label?: T;
   registration?: T;
   citizen?: T;
   title?: T;
   scheduledAt?: T;
   status?: T;
   createdBy?: T;
+  attendance?: T;
   updatedAt?: T;
   createdAt?: T;
 }
