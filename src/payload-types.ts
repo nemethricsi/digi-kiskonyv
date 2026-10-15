@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     citizens: Citizen;
     registrations: Registration;
+    appointments: Appointment;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -76,10 +77,18 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    citizens: {
+      registrations: 'registrations';
+    };
+    registrations: {
+      appointments: 'appointments';
+    };
+  };
   collectionsSelect: {
     citizens: CitizensSelect<false> | CitizensSelect<true>;
     registrations: RegistrationsSelect<false> | RegistrationsSelect<true>;
+    appointments: AppointmentsSelect<false> | AppointmentsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -135,6 +144,11 @@ export interface Citizen {
    * 9 számjegy
    */
   taj: string;
+  registrations?: {
+    docs?: (string | Registration)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -149,27 +163,31 @@ export interface Registration {
   requestedAt: string;
   startDate?: string | null;
   endDate?: string | null;
+  appointments?: {
+    docs?: (string | Appointment)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "appointments".
  */
-export interface Media {
+export interface Appointment {
   id: string;
-  alt: string;
+  registration: string | Registration;
+  /**
+   * A nyilvántartásba vételből töltődik ki.
+   */
+  citizen?: (string | null) | Citizen;
+  title: string;
+  scheduledAt: string;
+  status: 'scheduled' | 'attended' | 'missed' | 'cancelled';
+  createdBy?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -197,6 +215,25 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -229,6 +266,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'registrations';
         value: string | Registration;
+      } | null)
+    | ({
+        relationTo: 'appointments';
+        value: string | Appointment;
       } | null)
     | ({
         relationTo: 'media';
@@ -290,6 +331,7 @@ export interface CitizensSelect<T extends boolean = true> {
   dateOfBirth?: T;
   nameOfMother?: T;
   taj?: T;
+  registrations?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -303,6 +345,21 @@ export interface RegistrationsSelect<T extends boolean = true> {
   requestedAt?: T;
   startDate?: T;
   endDate?: T;
+  appointments?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appointments_select".
+ */
+export interface AppointmentsSelect<T extends boolean = true> {
+  registration?: T;
+  citizen?: T;
+  title?: T;
+  scheduledAt?: T;
+  status?: T;
+  createdBy?: T;
   updatedAt?: T;
   createdAt?: T;
 }
