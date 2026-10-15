@@ -9,7 +9,9 @@ import sharp from 'sharp';
 import { fileURLToPath } from 'url';
 
 import { Appointments } from '@/collections/Appointments';
-import { Citizen } from '@/collections/Citizen';
+import { Attendances } from '@/collections/Attendances';
+import { CheckInCodes } from '@/collections/CheckInCodes';
+import { Citizens } from '@/collections/Citizens';
 import { Media } from '@/collections/Media';
 import { Registrations } from '@/collections/Registrations';
 import { Users } from '@/collections/Users';
@@ -40,8 +42,27 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      afterNavLinks: [
+        '/components/admin/check-in/CheckInNavLink#CheckInNavLink',
+      ],
+      views: {
+        checkIn: {
+          Component: '/components/admin/check-in/CheckInView#CheckInView',
+          path: '/check-in',
+        },
+      },
+    },
   },
-  collections: [Citizen, Registrations, Appointments, Media, Users],
+  collections: [
+    Citizens,
+    Registrations,
+    Appointments,
+    Media,
+    Users,
+    Attendances,
+    CheckInCodes,
+  ],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,
   typescript: {

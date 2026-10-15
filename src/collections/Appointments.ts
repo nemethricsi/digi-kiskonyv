@@ -5,19 +5,48 @@ import {
   APPOINTMENT_STATUS_LABELS,
   APPOINTMENT_STATUSES,
 } from '@/lib/appointment-status';
+import { relationId } from '@/lib/relation-id';
 
 import type { AppointmentStatus } from '@/lib/appointment-status';
 import type { RegistrationStatus } from '@/lib/registration-status';
 import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload';
 
-const relationId = (value: unknown): string | undefined => {
-  if (typeof value === 'string') {
-    return value;
+/** Set in `req.context` by the attendance hook: only a stamp may mark an appointment attended */
+export const FROM_ATTENDANCE = 'fromAttendance';
+
+const protectAttendedStatus: CollectionBeforeChangeHook = ({
+  context,
+  data,
+  originalDoc,
+}) => {
+  const attended: AppointmentStatus = 'attended';
+  const statusChanged =
+    data.status !== undefined && data.status !== originalDoc?.status;
+
+  if (statusChanged && data.status === attended && !context[FROM_ATTENDANCE]) {
+    throw new ValidationError({
+      collection: 'appointments',
+      errors: [
+        {
+          path: 'status',
+          message: 'Megjelentre csak a megjelenés rögzítése állíthatja.',
+        },
+      ],
+    });
   }
-  if (value && typeof value === 'object' && 'id' in value) {
-    return String(value.id);
+  if (statusChanged && originalDoc?.status === attended) {
+    throw new ValidationError({
+      collection: 'appointments',
+      errors: [
+        {
+          path: 'status',
+          message: 'Rögzített megjelenés státusza nem módosítható.',
+        },
+      ],
+    });
   }
-  return undefined;
+
+  return data;
 };
 
 // Only for an approved registration, not before its startDate.
@@ -107,7 +136,7 @@ export const Appointments: CollectionConfig = {
     delete: hasAccess('admin'),
   },
   hooks: {
-    beforeChange: [validateAndFill],
+    beforeChange: [protectAttendedStatus, validateAndFill],
   },
   fields: [
     {
