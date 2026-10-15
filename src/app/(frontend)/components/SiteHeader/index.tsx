@@ -18,7 +18,7 @@ export function SiteHeader() {
             unoptimized
           />
         </Link>
-        <div className='flex items-center gap-3'>
+        <div className="flex items-center gap-3">
           <AppLink
             as="button"
             variant="subtle"
