@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { getPayload } from 'payload';
 
+import { DemoWarning } from '@/app/(frontend)/components/DemoWarning';
 import { SiteFooter } from '@/app/(frontend)/components/SiteFooter';
 import { SiteHeader } from '@/app/(frontend)/components/SiteHeader';
 import { getDemoCitizen } from '@/app/(frontend)/dap/me/demo-citizen';
@@ -183,6 +184,7 @@ export default async function CitizenPage() {
             A DÁP-azonosításból átvett személyes adatok
           </dap-ds-typography>
         </div>
+        <DemoWarning />
 
         <dap-ds-card>
           <dap-ds-card-title>Személyes adatok</dap-ds-card-title>

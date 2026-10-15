@@ -23,10 +23,6 @@ export function SiteHeader() {
           aria-label="Keresés"
         ></dap-ds-icon-button>
       </div>
-      {/* <dap-ds-banner variant="warning">
-        <strong>Fontos:</strong> Ez nem Magyarország hivatalos weboldala, csak
-        egy demo.
-      </dap-ds-banner> */}
     </header>
   );
 }
