@@ -6,7 +6,6 @@ import { SiteHeader } from '@/app/(frontend)/components/SiteHeader';
 export default async function HomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-bg-base">
-      <dap-ds-official-website-banner></dap-ds-official-website-banner>
       <SiteHeader />
       <Hero />
       <LaunchSection />

@@ -27,13 +27,13 @@
   --color-border-divider: var(--dds-border-neutral-divider);
 }
 
-/* dap-ds-button with an icon next to the label: the slot wrapper (part="content") is not flex
-   by default, so the icon sits on the text baseline without a gap. */
-@utility button-with-icon {
+@utility content-contained {
+  &::part(button),
   &::part(content) {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--dds-spacing-100); /* 4px */
+    padding-inline: max(
+      1rem,
+      calc(50% - var(--dds-containers-xlarge) / 2 + 1rem)
+    );
   }
 }
 
@@ -46,7 +46,6 @@
     scroll-padding-top: var(--header-height);
   }
 
-  /* dds-reset sets `outline: none` on everything; restore a visible focus ring (WCAG 2.4.7) */
   :focus-visible {
     outline: var(--dds-border-width-large) solid var(--dds-focus-outer-ring);
     outline-offset: 2px;

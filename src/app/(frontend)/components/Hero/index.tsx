@@ -34,10 +34,12 @@ export function Hero() {
               variant="subtle-inverted"
               size="sm"
               htmlType="button"
-              className="button-with-icon"
+              disabled
             >
-              Megosztás
-              <dap-ds-icon name="share-line" size="sm"></dap-ds-icon>
+              <dap-ds-stack direction="row">
+                <span>Megosztás</span>
+                <dap-ds-icon name="share-line" size="sm"></dap-ds-icon>
+              </dap-ds-stack>
             </dap-ds-button>
             <dap-ds-button
               variant="subtle-inverted"
