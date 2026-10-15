@@ -55,7 +55,7 @@ export function Hero() {
             munkakereséshez vagy karrierváltáshoz.
           </dap-ds-typography>
 
-          <AppLink as="button" variant="subtle-inverted" href="#adk">
+          <AppLink as="button" variant="subtle-inverted" href="/login">
             Álláskeresési járadék igénylése
           </AppLink>
         </div>

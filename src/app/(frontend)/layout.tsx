@@ -29,7 +29,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="hu">
+    <html lang="hu" data-scroll-behavior="smooth">
       <body className={inter.className}>
         <ClientApplication>
           <main>{children}</main>

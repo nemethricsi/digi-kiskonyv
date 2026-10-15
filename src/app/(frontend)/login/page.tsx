@@ -56,13 +56,13 @@ export default function LoginPage() {
                 src={appStoreBadge}
                 alt="Letölthető az App Store-ból"
                 className="h-auto w-full md:h-10 md:w-auto"
-                unoptimized
+                loading="eager"
               />
               <Image
                 src={playStoreBadge}
                 alt="Szerezd meg: Google Play"
                 className="h-auto w-full md:h-10 md:w-auto"
-                unoptimized
+                loading="eager"
               />
             </div>
 
@@ -70,7 +70,7 @@ export default function LoginPage() {
               src={illustration}
               alt=""
               className="mt-auto -mb-6 h-auto w-full md:-mb-12"
-              unoptimized
+              loading="eager"
             />
           </aside>
         </div>

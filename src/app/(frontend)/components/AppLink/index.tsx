@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 
 import type {
@@ -33,15 +33,11 @@ type LinkLookProps = CommonProps & {
 
 export type AppLinkProps = ButtonLookProps | LinkLookProps;
 
-/**
- * Navigation that looks like a DÁP button or link, and always renders an <a> (both components
- * render one when they get `href`). Plain left clicks on internal paths navigate client-side;
- * modifier / middle clicks and external URLs keep the browser's default behaviour.
- */
 export function AppLink(props: AppLinkProps) {
   const { href } = props;
   const router = useRouter();
   const isInternal = href.startsWith('/');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isInternal) {
@@ -59,6 +55,7 @@ export function AppLink(props: AppLinkProps) {
     if (!isInternal || isModified || event.defaultPrevented) {
       return;
     }
+    setLoading(true);
     event.preventDefault();
     router.push(href);
   }
@@ -71,6 +68,7 @@ export function AppLink(props: AppLinkProps) {
         variant={variant}
         size={size}
         className={className}
+        loading={loading}
         onClick={handleClick}
       >
         {children}
