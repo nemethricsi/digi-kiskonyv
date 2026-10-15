@@ -4,7 +4,6 @@ import Link from 'next/link';
 
 import { getPayload } from 'payload';
 
-import { AppLink } from '@/app/(frontend)/components/AppLink';
 import { GithubIcon } from '@/app/(frontend)/components/GithubIcon';
 import logo from '@/app/(frontend)/components/SiteHeader/logo-kek.svg';
 import config from '@/payload.config';
@@ -27,26 +26,34 @@ export async function SiteHeader() {
           />
         </Link>
         <div className="flex items-center gap-3">
-          <AppLink
-            as="button"
-            variant="subtle"
-            size="xs"
-            href="/admin"
-            className="button-with-icon"
-          >
-            <dap-ds-icon name="arrow-right-line" size="xs"></dap-ds-icon>
-            {user ? `${user.role} Payload` : 'Payload'}
-          </AppLink>
-          <AppLink
-            as="button"
-            variant="subtle"
-            size="xs"
-            className="button-with-icon"
-            href="https://github.com/nemethricsi/digi-kiskonyv"
-          >
-            <GithubIcon className="size-(--dds-icon-small)" />
-            GitHub
-          </AppLink>
+          <dap-ds-command>
+            <dap-ds-button
+              slot="trigger"
+              size="sm"
+              variant="subtle"
+              className="button-with-icon"
+            >
+              Menü
+              <dap-ds-icon name="menu-line-s"></dap-ds-icon>
+            </dap-ds-button>
+            <dap-ds-command-item href="/admin">
+              <dap-ds-stack direction="row">
+                <dap-ds-icon name="arrow-right-line" size="xs"></dap-ds-icon>
+                <span>{user ? `${user.role} Payload` : 'Payload'}</span>
+              </dap-ds-stack>
+            </dap-ds-command-item>
+            <dap-ds-command-item
+              href="https://github.com/nemethricsi/digi-kiskonyv"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <dap-ds-stack direction="row">
+                <GithubIcon className="size-(--dds-icon-small)" />
+                <span>GitHub</span>
+                <dap-ds-icon name="external-link-line" size="sm"></dap-ds-icon>
+              </dap-ds-stack>
+            </dap-ds-command-item>
+          </dap-ds-command>
           <dap-ds-icon-button
             icon="search-line"
             variant="brand"
