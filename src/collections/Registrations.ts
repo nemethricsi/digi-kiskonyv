@@ -16,6 +16,7 @@ export const Registrations: CollectionConfig = {
   },
   admin: {
     defaultColumns: ['citizen', 'status', 'requestedAt', 'startDate'],
+    useAsTitle: 'requestedAt',
   },
   access: {
     read: hasAccess('admin', 'clerk'),
@@ -69,6 +70,17 @@ export const Registrations: CollectionConfig = {
       type: 'date',
       admin: {
         date: { pickerAppearance: 'dayOnly', displayFormat: 'yyyy-MM-dd' },
+      },
+    },
+    {
+      name: 'appointments',
+      label: 'Időpontok',
+      type: 'join',
+      collection: 'appointments',
+      on: 'registration',
+      defaultSort: 'scheduledAt',
+      admin: {
+        defaultColumns: ['scheduledAt', 'title', 'status'],
       },
     },
   ],
