@@ -76,5 +76,17 @@ export const Citizen: CollectionConfig = {
         return isValidTaj(value) || 'Érvénytelen TAJ szám.';
       },
     },
+    {
+      name: 'registrations',
+      label: 'Nyilvántartásba vételek',
+      type: 'join',
+      collection: 'registrations',
+      on: 'citizen',
+      defaultSort: '-requestedAt',
+      admin: {
+        defaultColumns: ['requestedAt', 'status', 'startDate', 'endDate'],
+        allowCreate: false,
+      },
+    },
   ],
 };

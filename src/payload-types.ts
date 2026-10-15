@@ -76,7 +76,11 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    citizens: {
+      registrations: 'registrations';
+    };
+  };
   collectionsSelect: {
     citizens: CitizensSelect<false> | CitizensSelect<true>;
     registrations: RegistrationsSelect<false> | RegistrationsSelect<true>;
@@ -135,6 +139,11 @@ export interface Citizen {
    * 9 számjegy
    */
   taj: string;
+  registrations?: {
+    docs?: (string | Registration)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -290,6 +299,7 @@ export interface CitizensSelect<T extends boolean = true> {
   dateOfBirth?: T;
   nameOfMother?: T;
   taj?: T;
+  registrations?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -16,7 +16,7 @@ export const ACTIVE_REGISTRATION_STATUSES = [
 
 export const REGISTRATION_STATUS_LABELS: Record<RegistrationStatus, string> = {
   requested: 'Elbírálás alatt',
-  approved: 'Jóváhagyva',
+  approved: 'Aktív',
   rejected: 'Elutasítva',
   closed: 'Lezárva',
 };
