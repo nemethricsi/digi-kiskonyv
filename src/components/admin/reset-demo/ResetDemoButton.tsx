@@ -27,7 +27,7 @@ export function ResetDemoButton() {
   return (
     <>
       <Button buttonStyle="secondary" onClick={() => openModal(MODAL_SLUG)}>
-        Demóadatok visszaállítása
+        Adatbázis visszaállítása
       </Button>
       <ConfirmationModal
         modalSlug={MODAL_SLUG}
