@@ -8,6 +8,13 @@ This app keeps both jobs of the booklet: it **reminds** the citizen of the next 
 
 > **Demo only.** All data is fictional, e-mail addresses are `@example.com`, and the "Sign in with DÁP" button is a mock.
 
+> [!TIP]
+> **Why did I build this?**
+>
+> I've received several of these booklets myself, and lost more than one. It's a small paper booklet that's easy to misplace, and losing it has no real consequence: you simply get a new one. Yet it's the only proof in your hands that you attended a mandatory appointment.
+>
+> That single purpose is what I wanted to preserve in digital form: proof of attendance that stays with you, can't be lost, and can be verified on your side too.
+
 ## What it shows
 
 - **Next.js (App Router) + Payload CMS 3 in one app.** Payload provides the admin UI, auth, access control, hooks and the database layer; the citizen pages are plain Next.js routes using the Payload Local API and server actions.
