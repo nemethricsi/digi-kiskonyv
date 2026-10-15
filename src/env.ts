@@ -8,6 +8,8 @@ export const env = createEnv({
     // Mailpit locally; unset on Vercel preview, where Payload logs emails to the console
     SMTP_HOST: z.string().optional(),
     SMTP_PORT: z.coerce.number().int().default(1025),
+    // Shows the "reset demo data" button to admins (production too). Needs the SEED_* env vars.
+    ALLOW_DEMO_RESET: z.stringbool().default(false),
     // Vercel system env vars, absent locally
     VERCEL_ENV: z.enum(['production', 'preview', 'development']).optional(),
     VERCEL_URL: z.string().optional(),

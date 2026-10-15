@@ -161,7 +161,9 @@ if (process.env.VERCEL_ENV === 'preview') {
 run('next build');
 ```
 
-**Seed szabályok:** idempotens (stabil kulcsok alapján, csak ha még nem létezik), csak kitalált adat és `@example.com` cím, ugyanaz a fájl fut lokálisan és previewban. A seed hozza létre az első admin usert is.
+**Seed szabályok:** idempotens (stabil kulcsok alapján, csak ha még nem létezik), csak kitalált adat és `@example.com` cím, ugyanaz a fájl fut lokálisan és previewban. A seed hozza létre az `admin@example.com` admint és a `clerk@example.com` ügyintézőt is; az e-mailek fixek a kódban, csak a jelszavak jönnek env-ből (`SEED_ADMIN_PASSWORD`, `SEED_CLERK_PASSWORD`).
+
+**Demó-visszaállítás (tudatos kivétel a prod-szabály alól):** a prod itt maga a demó, csak kitalált adattal, ezért az admin dashboardon egy gomb mindent töröl és újra seedel. Feltételek: `ALLOW_DEMO_RESET=true`, admin szerep (a server action is ellenőrzi), megerősítő modal. Nem `migrate:fresh`: egy tranzakcióban `TRUNCATE ... CASCADE` minden táblára a `payload_migrations` kivételével, majd ugyanaz a `seed()` fut. A séma és a migrációs előzmények érintetlenek; ha a seed elhasal, a törlés is visszagörgetődik. A sessionök is törlődnek, utána újra be kell lépni. Valódi rendszerben ilyen gomb nem lehet élesben. Kód: `src/seed/reset.ts`, `src/components/admin/reset-demo/`.
 
 **Későbbi bővítés:** PR-enként friss adatbázis GitHub Actionnel (Neon `create-branch` / `delete-branch`), adatmentes alap branchből. A Neon Vercel-integrációját nem használjuk, mert az a prod branchből másol, adatokkal együtt.
 

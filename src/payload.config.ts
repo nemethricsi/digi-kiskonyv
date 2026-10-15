@@ -43,6 +43,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components: {
+      beforeDashboard: ['/components/admin/reset-demo/ResetDemo#ResetDemo'],
       afterNavLinks: [
         '/components/admin/check-in/CheckInNavLink#CheckInNavLink',
       ],
